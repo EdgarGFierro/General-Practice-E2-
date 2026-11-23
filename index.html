@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Verb & Auxiliary Trainer</title>
+  <title>Grammar & Verb Lab</title>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -123,7 +123,7 @@
       color: var(--text);
     }
 
-    /* 16px evita el zoom automático en iPhone/iPad */
+    /* 16px evita el zoom automático en Safari de iPhone/iPad */
     input[type="text"] {
       width: 100%;
       padding: 12px 14px;
@@ -229,7 +229,7 @@
       border-radius: 14px;
       padding: 22px 18px;
       margin-bottom: 16px;
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       line-height: 1.75;
       color: var(--text);
     }
@@ -240,7 +240,7 @@
       background: var(--primary-light);
       padding: 2px 8px;
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.94rem;
     }
 
     .feedback {
@@ -327,20 +327,20 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>Verb & Auxiliary Lab</h1>
-      <span class="badge" id="headerBadge">Rondas de 5</span>
+      <h1>Grammar & Verb Lab</h1>
+      <span class="badge" id="headerBadge">Rondas de 8</span>
     </div>
 
     <!-- PANTALLA 1: INICIO -->
     <div class="content" id="startScreen">
       <div class="desc-box">
-        <strong>Entrenamiento aleatorio de verbos y auxiliares:</strong> Practicarás en bloques rápidos de <strong>5 oraciones al azar</strong>. Lee toda la oración para identificar el contexto temporal sin pistas resaltadas.
+        <strong>Entrenamiento aleatorio:</strong> Practicarás en bloques rápidos de oraciones al azar. Lee toda la oración para identificar el contexto temporal.
       </div>
 
       <ul class="rules-list">
-        <li>Si ves un verbo entre paréntesis, ej. <strong>(write)</strong>, escribe el verbo conjugado completo (incluyendo auxiliares como <em>have, has, am, is, are, didn't, going to</em> si el contexto lo pide).</li>
-        <li>Si ves <strong>(auxiliar)</strong>, escribe únicamente el auxiliar que falta al inicio o en la pregunta (<em>did, have, has, am, is, are</em>).</li>
-        <li>Puedes completar varias rondas seguidas para dominar los 40 verbos.</li>
+        <li>Cada ronda incluye <strong>8 reactivos mezclados al azar</strong>: conjugación de verbos, auxiliares (<em>did, have, has, am, is, are</em>), patrones verbales (<em>-ing</em> vs. <em>to</em>), comparativos/superlativos y orden de preguntas.</li>
+        <li>Escribe únicamente la palabra o frase que completa el espacio en blanco.</li>
+        <li>Al terminar cada ronda puedes repetir las que fallaste o iniciar una ronda nueva.</li>
       </ul>
 
       <div class="form-group">
@@ -348,14 +348,14 @@
         <input type="text" id="studentName" placeholder="Escribe tu nombre y apellidos..." autocomplete="name" />
       </div>
 
-      <button class="btn btn-primary" onclick="startSession()">Iniciar Ronda 1 (5 oraciones)</button>
+      <button class="btn btn-primary" onclick="startSession()">Iniciar Ronda 1 (8 reactivos)</button>
     </div>
 
     <!-- PANTALLA 2: EJERCICIO -->
     <div class="content hidden" id="quizScreen">
       <div class="progress-wrap">
         <div class="progress-meta">
-          <span id="progressText">Ronda 1 • Oración 1 de 5</span>
+          <span id="progressText">Ronda 1 • Reactivo 1 de 8</span>
           <span id="scoreText">Puntos ronda: 0</span>
         </div>
         <div class="progress-bar">
@@ -391,7 +391,7 @@
           <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase;" id="roundSummaryTitle">
             Resumen de Ronda 1
           </div>
-          <div class="receipt-score" id="roundScoreDisplay">0 / 5</div>
+          <div class="receipt-score" id="roundScoreDisplay">0 / 8</div>
           <div style="font-size: 0.9rem; color: var(--muted); margin-top: 4px;" id="cumulativeDisplay">
             Acumulado total: 0 pts en 1 ronda
           </div>
@@ -420,11 +420,11 @@
       </button>
 
       <button class="btn btn-teal" onclick="startNewRound()">
-        🎲 Siguiente ronda de 5 (Nuevos verbos)
+        🎲 Siguiente ronda de 8 (Nuevos reactivos)
       </button>
 
       <div id="mistakesSection" class="hidden" style="margin-top: 14px;">
-        <h3 style="font-size: 1rem; margin-bottom: 6px;">Oraciones pendientes de esta ronda:</h3>
+        <h3 style="font-size: 1rem; margin-bottom: 6px;">Reactivos pendientes de esta ronda:</h3>
         <div class="review-list" id="reviewList"></div>
       </div>
 
@@ -433,67 +433,87 @@
   </div>
 
   <script>
-    // Banco de 50 reactivos que cubre los 40 verbos (25 irregulares + 15 regulares) y auxiliares clave
+    // Banco auditado de 64 reactivos (8 categorías x 8 reactivos = 8 rondas completas sin repetición)
     const questionBank = [
-      // --- SIMPLE PAST AFFIRMATIVE (SP_AFF) ---
-      { id: 1, cat: "SP_AFF", before: "My brother", tag: "write", after: "three long reports last month.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["wrote"], display: "wrote" },
-      { id: 2, cat: "SP_AFF", before: "When I was ten years old, I", tag: "break", after: "my left arm playing soccer.", tense: "Simple Past", subject: "I", isAux: false, accepted: ["broke"], display: "broke" },
-      { id: 3, cat: "SP_AFF", before: "Our neighbor", tag: "drive", after: "all night to reach the coast yesterday.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["drove"], display: "drove" },
-      { id: 4, cat: "SP_AFF", before: "The players", tag: "feel", after: "exhausted after the championship match.", tense: "Simple Past", subject: "plur", isAux: false, accepted: ["felt"], display: "felt" },
-      { id: 5, cat: "SP_AFF", before: "The manager", tag: "give", after: "clear instructions before the shift started.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["gave"], display: "gave" },
-      { id: 6, cat: "SP_AFF", before: "We", tag: "have", after: "a great dinner at a small restaurant two nights ago.", tense: "Simple Past", subject: "plur", isAux: false, accepted: ["had"], display: "had" },
-      { id: 7, cat: "SP_AFF", before: "I", tag: "lose", after: "my house keys on the bus yesterday afternoon.", tense: "Simple Past", subject: "I", isAux: false, accepted: ["lost"], display: "lost" },
-      { id: 8, cat: "SP_AFF", before: "My roommate", tag: "take", after: "the wrong train during rush hour.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["took"], display: "took" },
-      { id: 9, cat: "SP_AFF", before: "Two volunteers", tag: "assist", after: "the coordinator during the conference.", tense: "Simple Past", subject: "plur", isAux: false, accepted: ["assisted"], display: "assisted" },
-      { id: 10, cat: "SP_AFF", before: "Everyone", tag: "enjoy", after: "the outdoor concert last weekend.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["enjoyed"], display: "enjoyed" },
-      { id: 11, cat: "SP_AFF", before: "The committee", tag: "plan", after: "the whole festival six months ago.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["planned"], display: "planned" },
-      { id: 12, cat: "SP_AFF", before: "Our band", tag: "play", after: "at a local café last Friday night.", tense: "Simple Past", subject: "sing", isAux: false, accepted: ["played"], display: "played" },
-      { id: 13, cat: "SP_AFF", before: "She", tag: "study", after: "architecture in Guadalajara from 2018 to 2022.", tense: "Simple Past", subject: "sing3", isAux: false, accepted: ["studied"], display: "studied" },
-      { id: 14, cat: "SP_AFF", before: "The stadium", tag: "be", after: "completely full during the final game.", tense: "Simple Past", subject: "sing3", isAux: false, accepted: ["was"], display: "was" },
+      // 1. SIMPLE PAST AFFIRMATIVE (SP_AFF) - 8 reactivos
+      { id: 1, cat: "SP_AFF", before: "My brother", tag: "write", after: "three long emails last month.", tense: "Simple Past", subject: "sing", mode: "verb", accepted: ["wrote"], display: "wrote" },
+      { id: 2, cat: "SP_AFF", before: "When I was ten years old, I", tag: "break", after: "my left arm playing soccer.", tense: "Simple Past", subject: "I", mode: "verb", accepted: ["broke"], display: "broke" },
+      { id: 3, cat: "SP_AFF", before: "Our neighbor", tag: "drive", after: "all night to reach the coast yesterday.", tense: "Simple Past", subject: "sing", mode: "verb", accepted: ["drove"], display: "drove" },
+      { id: 4, cat: "SP_AFF", before: "The manager", tag: "give", after: "clear instructions before the shift started.", tense: "Simple Past", subject: "sing", mode: "verb", accepted: ["gave"], display: "gave" },
+      { id: 5, cat: "SP_AFF", before: "I", tag: "lose", after: "my house keys on the bus yesterday afternoon.", tense: "Simple Past", subject: "I", mode: "verb", accepted: ["lost"], display: "lost" },
+      { id: 6, cat: "SP_AFF", before: "My roommate", tag: "take", after: "the wrong bus yesterday morning.", tense: "Simple Past", subject: "sing", mode: "verb", accepted: ["took"], display: "took" },
+      { id: 7, cat: "SP_AFF", before: "She", tag: "study", after: "architecture in Guadalajara from 2018 to 2022.", tense: "Simple Past", subject: "sing3", mode: "verb", accepted: ["studied"], display: "studied" },
+      { id: 8, cat: "SP_AFF", before: "The committee", tag: "plan", after: "the whole festival six months ago.", tense: "Simple Past", subject: "sing", mode: "verb", accepted: ["planned"], display: "planned" },
 
-      // --- SIMPLE PAST AUXILIARY & NEGATIVE: DID / DIDN'T (SP_AUX) ---
-      { id: 15, cat: "SP_AUX", before: "", tag: "auxiliar", after: "you see the announcement on the board yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", isAux: true, accepted: ["did"], display: "Did" },
-      { id: 16, cat: "SP_AUX", before: "", tag: "auxiliar", after: "the technician repair the projector last morning?", tense: "Simple Past (Pregunta)", subject: "sing3", isAux: true, accepted: ["did"], display: "Did" },
-      { id: 17, cat: "SP_AUX", before: "", tag: "auxiliar", after: "she feel better after resting last night?", tense: "Simple Past (Pregunta)", subject: "sing3", isAux: true, accepted: ["did"], display: "Did" },
-      { id: 18, cat: "SP_AUX", before: "My cousins", tag: "not / come", after: "to the family reunion last Sunday.", tense: "Simple Past (Negativo)", subject: "plur", isAux: false, accepted: ["didn't come", "did not come"], display: "didn't come / did not come" },
-      { id: 19, cat: "SP_AUX", before: "They", tag: "not / go", after: "to the beach because it rained all weekend.", tense: "Simple Past (Negativo)", subject: "plur", isAux: false, accepted: ["didn't go", "did not go"], display: "didn't go / did not go" },
-      { id: 20, cat: "SP_AUX", before: "Why", tag: "auxiliar", after: "you choose that topic for your essay yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", isAux: true, accepted: ["did"], display: "did" },
+      // 2. SIMPLE PAST AUXILIARY & NEGATIVE: DID / DIDN'T (SP_AUX) - 8 reactivos
+      { id: 9, cat: "SP_AUX", before: "", tag: "auxiliar", after: "you see the announcement on the board yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", mode: "aux", accepted: ["did"], display: "Did" },
+      { id: 10, cat: "SP_AUX", before: "", tag: "auxiliar", after: "the technician repair the projector yesterday morning?", tense: "Simple Past (Pregunta)", subject: "sing3", mode: "aux", accepted: ["did"], display: "Did" },
+      { id: 11, cat: "SP_AUX", before: "", tag: "auxiliar", after: "she feel better after resting last night?", tense: "Simple Past (Pregunta)", subject: "sing3", mode: "aux", accepted: ["did"], display: "Did" },
+      { id: 12, cat: "SP_AUX", before: "Why", tag: "auxiliar", after: "you choose that topic for your essay yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", mode: "aux", accepted: ["did"], display: "did" },
+      { id: 13, cat: "SP_AUX", before: "My cousins", tag: "not / come", after: "to the family reunion last Sunday.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't come", "did not come"], display: "didn't come / did not come" },
+      { id: 14, cat: "SP_AUX", before: "They", tag: "not / go", after: "to the beach last weekend because it rained.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't go", "did not go"], display: "didn't go / did not go" },
+      { id: 15, cat: "SP_AUX", before: "We", tag: "not / have", after: "enough time to complete the lab report yesterday.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't have", "did not have"], display: "didn't have / did not have" },
+      { id: 16, cat: "SP_AUX", before: "He", tag: "not / buy", after: "the concert tickets last Friday.", tense: "Simple Past (Negativo)", subject: "sing3", mode: "verb", accepted: ["didn't buy", "did not buy"], display: "didn't buy / did not buy" },
 
-      // --- PRESENT PERFECT: HAVE / HAS + PAST PARTICIPLE (PP) ---
-      { id: 21, cat: "PP", before: "She", tag: "buy", after: "a new laptop for her classes this week.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has bought", "'s bought"], display: "has bought" },
-      { id: 22, cat: "PP", before: "We", tag: "choose", after: "the best date for our group presentation already.", tense: "Present Perfect", subject: "plur", isAux: false, accepted: ["have chosen", "'ve chosen"], display: "have chosen" },
-      { id: 23, cat: "PP", before: "I", tag: "not / drink", after: "any coffee yet today.", tense: "Present Perfect", subject: "I", isAux: false, accepted: ["haven't drunk", "have not drunk"], display: "haven't drunk / have not drunk" },
-      { id: 24, cat: "PP", before: "My friend", tag: "eat", after: "exotic food in three different countries.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has eaten", "'s eaten"], display: "has eaten" },
-      { id: 25, cat: "PP", before: "The researchers", tag: "find", after: "a reliable solution to the problem.", tense: "Present Perfect", subject: "plur", isAux: false, accepted: ["have found", "'ve found"], display: "have found" },
-      { id: 26, cat: "PP", before: "", tag: "auxiliar", after: "you ever flown in a small airplane?", tense: "Present Perfect (Pregunta)", subject: "plur", isAux: true, accepted: ["have"], display: "Have" },
-      { id: 27, cat: "PP", before: "He", tag: "keep", after: "all his childhood notebooks in a wooden box.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has kept", "'s kept"], display: "has kept" },
-      { id: 28, cat: "PP", before: "Our team", tag: "meet", after: "with the advisor twice this semester.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has met", "'s met"], display: "has met" },
-      { id: 29, cat: "PP", before: "The director", tag: "speak", after: "to all the new students already.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has spoken", "'s spoken"], display: "has spoken" },
-      { id: 30, cat: "PP", before: "She", tag: "decide", after: "to apply for an international scholarship.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has decided", "'s decided"], display: "has decided" },
-      { id: 31, cat: "PP", before: "My roommate", tag: "finish", after: "the final draft of the project already.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has finished", "'s finished"], display: "has finished" },
-      { id: 32, cat: "PP", before: "They", tag: "learn", after: "a lot of practical skills since August.", tense: "Present Perfect", subject: "plur", isAux: false, accepted: ["have learned", "'ve learned", "have learnt", "'ve learnt"], display: "have learned" },
-      { id: 33, cat: "PP", before: "My uncle", tag: "live", after: "in Canada for more than ten years.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has lived", "'s lived"], display: "has lived" },
-      { id: 34, cat: "PP", before: "Our instructor", tag: "work", after: "at this university since 2019.", tense: "Present Perfect", subject: "sing3", isAux: false, accepted: ["has worked", "'s worked"], display: "has worked" },
-      { id: 35, cat: "PP", before: "", tag: "auxiliar", after: "your sister ever visited the museums in Mexico City?", tense: "Present Perfect (Pregunta)", subject: "sing3", isAux: true, accepted: ["has"], display: "Has" },
+      // 3. PRESENT PERFECT: HAVE / HAS + PAST PARTICIPLE (PP) - 8 reactivos
+      { id: 17, cat: "PP", before: "My roommate", tag: "finish", after: "the final draft of the project already.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has finished", "'s finished"], display: "has finished" },
+      { id: 18, cat: "PP", before: "We", tag: "choose", after: "the best date for our group presentation already.", tense: "Present Perfect", subject: "plur", mode: "verb", accepted: ["have chosen", "'ve chosen"], display: "have chosen" },
+      { id: 19, cat: "PP", before: "I", tag: "not / drink", after: "any coffee yet today.", tense: "Present Perfect", subject: "I", mode: "verb", accepted: ["haven't drunk", "have not drunk"], display: "haven't drunk / have not drunk" },
+      { id: 20, cat: "PP", before: "So far, my friend", tag: "eat", after: "traditional food in three different countries.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has eaten", "'s eaten"], display: "has eaten" },
+      { id: 21, cat: "PP", before: "My uncle", tag: "keep", after: "his old vinyl records in the attic since 1998.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has kept", "'s kept"], display: "has kept" },
+      { id: 22, cat: "PP", before: "Our instructor", tag: "work", after: "at this university since 2019.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has worked", "'s worked"], display: "has worked" },
+      { id: 23, cat: "PP", before: "", tag: "auxiliar", after: "you ever flown in a small airplane?", tense: "Present Perfect (Pregunta)", subject: "plur", mode: "aux", accepted: ["have"], display: "Have" },
+      { id: 24, cat: "PP", before: "", tag: "auxiliar", after: "your sister ever met a famous musician?", tense: "Present Perfect (Pregunta)", subject: "sing3", mode: "aux", accepted: ["has"], display: "Has" },
 
-      // --- PRESENT CONTINUOUS: AM / IS / ARE + -ING (PC) ---
-      { id: 36, cat: "PC", before: "Be quiet! The students", tag: "do", after: "a listening exercise right now.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are doing", "'re doing"], display: "are doing" },
-      { id: 37, cat: "PC", before: "Put on a jacket—it", tag: "get", after: "really cold outside at the moment.", tense: "Present Continuous", subject: "sing3", isAux: false, accepted: ["is getting", "'s getting"], display: "is getting" },
-      { id: 38, cat: "PC", before: "Look! The chef", tag: "make", after: "fresh tortillas in the kitchen right now.", tense: "Present Continuous", subject: "sing3", isAux: false, accepted: ["is making", "'s making"], display: "is making" },
-      { id: 39, cat: "PC", before: "The students", tag: "read", after: "an article about renewable energy in class today.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are reading", "'re reading"], display: "are reading" },
-      { id: 40, cat: "PC", before: "At this second, the author", tag: "write", after: "the last chapter of the novel.", tense: "Present Continuous", subject: "sing3", isAux: false, accepted: ["is writing", "'s writing"], display: "is writing" },
-      { id: 41, cat: "PC", before: "We", tag: "clean", after: "the laboratory after our chemistry experiment.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are cleaning", "'re cleaning"], display: "are cleaning" },
-      { id: 42, cat: "PC", before: "My friends", tag: "hike", after: "up the mountain trail this morning.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are hiking", "'re hiking"], display: "are hiking" },
-      { id: 43, cat: "PC", before: "The organizers", tag: "plan", after: "the next academic symposium these days.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are planning", "'re planning"], display: "are planning" },
-      { id: 44, cat: "PC", before: "Our team leader", tag: "prepare", after: "the slides for today's meeting.", tense: "Present Continuous", subject: "sing3", isAux: false, accepted: ["is preparing", "'s preparing"], display: "is preparing" },
-      { id: 45, cat: "PC", before: "Right now, we", tag: "study", after: "for our upcoming final presentations.", tense: "Present Continuous", subject: "plur", isAux: false, accepted: ["are studying", "'re studying"], display: "are studying" },
-      { id: 46, cat: "PC", before: "", tag: "auxiliar", after: "your classmates practicing in the auditorium right now?", tense: "Present Continuous (Pregunta)", subject: "plur", isAux: true, accepted: ["are"], display: "Are" },
+      // 4. PRESENT CONTINUOUS: AM / IS / ARE + -ING (PC) - 8 reactivos
+      { id: 25, cat: "PC", before: "Right now, we", tag: "study", after: "for our upcoming class presentations.", tense: "Present Continuous", subject: "plur", mode: "verb", accepted: ["are studying", "'re studying"], display: "are studying" },
+      { id: 26, cat: "PC", before: "Be quiet! The students", tag: "do", after: "a listening exercise right now.", tense: "Present Continuous", subject: "plur", mode: "verb", accepted: ["are doing", "'re doing"], display: "are doing" },
+      { id: 27, cat: "PC", before: "Put on a jacket—it", tag: "get", after: "really cold outside at the moment.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is getting", "'s getting"], display: "is getting" },
+      { id: 28, cat: "PC", before: "Look! The chef", tag: "make", after: "fresh tortillas in the kitchen right now.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is making", "'s making"], display: "is making" },
+      { id: 29, cat: "PC", before: "At this second, the author", tag: "write", after: "the last chapter of the novel.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is writing", "'s writing"], display: "is writing" },
+      { id: 30, cat: "PC", before: "Right now, our team leader", tag: "prepare", after: "the slides for today's meeting.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is preparing", "'s preparing"], display: "is preparing" },
+      { id: 31, cat: "PC", before: "", tag: "auxiliar", after: "your classmates practicing in the auditorium right now?", tense: "Present Continuous (Pregunta)", subject: "plur", mode: "aux", accepted: ["are"], display: "Are" },
+      { id: 32, cat: "PC", before: "", tag: "auxiliar", after: "the engineers testing the new software this week?", tense: "Present Continuous (Pregunta)", subject: "plur", mode: "aux", accepted: ["are"], display: "Are" },
 
-      // --- FUTURE (GOING TO) & AUXILIARY CONTRAST (FUT) ---
-      { id: 47, cat: "FUT", before: "Next semester, my tutor", tag: "help", after: "me organize my thesis schedule.", tense: "Future (be going to)", subject: "sing3", isAux: false, accepted: ["is going to help", "'s going to help", "will help", "'ll help"], display: "is going to help" },
-      { id: 48, cat: "FUT", before: "Next summer, I", tag: "visit", after: "my grandparents in Sonora.", tense: "Future (be going to)", subject: "I", isAux: false, accepted: ["am going to visit", "'m going to visit", "will visit", "'ll visit"], display: "am going to visit" },
-      { id: 49, cat: "FUT", before: "", tag: "auxiliar", after: "you going to attend the workshop tomorrow afternoon?", tense: "Future (be going to)", subject: "plur", isAux: true, accepted: ["are"], display: "Are" },
-      { id: 50, cat: "FUT", before: "", tag: "auxiliar", after: "they attending the international seminar this week?", tense: "Present Continuous (Pregunta)", subject: "plur", isAux: true, accepted: ["are"], display: "Are" }
+      // 5. FUTURE (PRIOR PLANS): BE GOING TO (FUT) - 8 reactivos
+      { id: 33, cat: "FUT", before: "She already bought her ticket! Next summer, she", tag: "travel", after: "to Oaxaca.", tense: "Future (be going to)", subject: "sing3", mode: "verb", accepted: ["is going to travel", "'s going to travel"], display: "is going to travel" },
+      { id: 34, cat: "FUT", before: "We already agreed on the schedule: tomorrow, my tutor", tag: "help", after: "me organize my notes.", tense: "Future (be going to)", subject: "sing3", mode: "verb", accepted: ["is going to help", "'s going to help"], display: "is going to help" },
+      { id: 35, cat: "FUT", before: "It is already on our calendar: tomorrow morning, we", tag: "clean", after: "the chemistry lab.", tense: "Future (be going to)", subject: "plur", mode: "verb", accepted: ["are going to clean", "'re going to clean"], display: "are going to clean" },
+      { id: 36, cat: "FUT", before: "He already enrolled in the course! Next semester, he", tag: "learn", after: "German.", tense: "Future (be going to)", subject: "sing3", mode: "verb", accepted: ["is going to learn", "'s going to learn"], display: "is going to learn" },
+      { id: 37, cat: "FUT", before: "They already packed their backpacks: this weekend, my friends", tag: "hike", after: "up the mountain trail.", tense: "Future (be going to)", subject: "plur", mode: "verb", accepted: ["are going to hike", "'re going to hike"], display: "are going to hike" },
+      { id: 38, cat: "FUT", before: "I already signed the lease: next month, I", tag: "live", after: "closer to campus.", tense: "Future (be going to)", subject: "I", mode: "verb", accepted: ["am going to live", "'m going to live"], display: "am going to live" },
+      { id: 39, cat: "FUT", before: "", tag: "auxiliar", after: "you going to attend the robotics workshop tomorrow afternoon?", tense: "Future (be going to - Pregunta)", subject: "plur", mode: "aux", accepted: ["are"], display: "Are" },
+      { id: 40, cat: "FUT", before: "", tag: "auxiliar", after: "he going to present his research next Friday?", tense: "Future (be going to - Pregunta)", subject: "sing3", mode: "aux", accepted: ["is"], display: "Is" },
+
+      // 6. VERB PATTERNS: GERUND (-ING) VS. INFINITIVE (TO + BASE) (VPAT) - 8 reactivos
+      { id: 41, cat: "VPAT", before: "My friends really enjoy", tag: "camp", after: "in the mountains on weekends.", tense: "Verb Pattern (enjoy + -ing)", mode: "pattern_ing", accepted: ["camping"], display: "camping" },
+      { id: 42, cat: "VPAT", before: "We plan", tag: "explore", after: "the historic downtown during our vacation.", tense: "Verb Pattern (plan + to + verbo)", mode: "pattern_to", accepted: ["to explore"], display: "to explore" },
+      { id: 43, cat: "VPAT", before: "Two volunteers agreed", tag: "organize", after: "the materials for the conference.", tense: "Verb Pattern (agree + to + verbo)", mode: "pattern_to", accepted: ["to organize"], display: "to organize" },
+      { id: 44, cat: "VPAT", before: "She decided", tag: "study", after: "abroad after completing her degree.", tense: "Verb Pattern (decide + to + verbo)", mode: "pattern_to", accepted: ["to study"], display: "to study" },
+      { id: 45, cat: "VPAT", before: "He practices", tag: "play", after: "acoustic guitar for an hour every evening.", tense: "Verb Pattern (practice + -ing)", mode: "pattern_ing", accepted: ["playing"], display: "playing" },
+      { id: 46, cat: "VPAT", before: "They want", tag: "find", after: "a quiet café where they can work together.", tense: "Verb Pattern (want + to + verbo)", mode: "pattern_to", accepted: ["to find"], display: "to find" },
+      { id: 47, cat: "VPAT", before: "My cousin avoids", tag: "drive", after: "in heavy rain at night.", tense: "Verb Pattern (avoid + -ing)", mode: "pattern_ing", accepted: ["driving"], display: "driving" },
+      { id: 48, cat: "VPAT", before: "Our team needs", tag: "prepare", after: "the visual slides before Monday.", tense: "Verb Pattern (need + to + verbo)", mode: "pattern_to", accepted: ["to prepare"], display: "to prepare" },
+
+      // 7. COMPARATIVES & SUPERLATIVES + CVC SPELLING (COMP) - 8 reactivos
+      { id: 49, cat: "COMP", before: "In our entire running club, she is", tag: "fast", after: ".", tense: "Superlative (the + -est)", mode: "superlative", accepted: ["the fastest"], display: "the fastest" },
+      { id: 50, cat: "COMP", before: "August is usually", tag: "hot", after: "month of the year in our city.", tense: "Superlative CVC (the + -ttest)", mode: "superlative_cvc", accepted: ["the hottest"], display: "the hottest" },
+      { id: 51, cat: "COMP", before: "This library has", tag: "big", after: "collection of digital books in the state.", tense: "Superlative CVC (the + -ggest)", mode: "superlative_cvc", accepted: ["the biggest"], display: "the biggest" },
+      { id: 52, cat: "COMP", before: "That documentary was", tag: "interesting", after: "movie we watched this semester.", tense: "Superlative (the most + adjetivo)", mode: "superlative_long", accepted: ["the most interesting"], display: "the most interesting" },
+      { id: 53, cat: "COMP", before: "Mount Everest is", tag: "high", after: "mountain in the world.", tense: "Superlative (the + -est)", mode: "superlative", accepted: ["the highest"], display: "the highest" },
+      { id: 54, cat: "COMP", before: "Traveling by train is often", tag: "cheap", after: "than flying.", tense: "Comparative (-er)", mode: "comparative_short", accepted: ["cheaper"], display: "cheaper" },
+      { id: 55, cat: "COMP", before: "This new laptop is much", tag: "expensive", after: "than my old computer.", tense: "Comparative (more + adjetivo)", mode: "comparative_long", accepted: ["more expensive"], display: "more expensive" },
+      { id: 56, cat: "COMP", before: "Today's explanation was", tag: "clear", after: "than yesterday's lecture.", tense: "Comparative (-er)", mode: "comparative_short", accepted: ["clearer"], display: "clearer" },
+
+      // 8. QUESTION WORD ORDER (CAN) & TENSE CONCEPTS (ORD_CON) - 8 reactivos
+      { id: 57, cat: "ORD_CON", before: "Ordena la pregunta:", tag: "can / cook / your brother / Italian food", after: "?", tense: "Question Word Order (Can + sujeto + verbo)", mode: "order_can", accepted: ["can your brother cook italian food"], display: "Can your brother cook Italian food" },
+      { id: 58, cat: "ORD_CON", before: "Ordena la pregunta:", tag: "play / can / they / the piano / well", after: "?", tense: "Question Word Order (Can + sujeto + verbo)", mode: "order_can", accepted: ["can they play the piano well"], display: "Can they play the piano well" },
+      { id: 59, cat: "ORD_CON", before: "Ordena la pregunta:", tag: "drive / can / she / a manual car", after: "?", tense: "Question Word Order (Can + sujeto + verbo)", mode: "order_can", accepted: ["can she drive a manual car"], display: "Can she drive a manual car" },
+      { id: 60, cat: "ORD_CON", before: "Ordena la pregunta:", tag: "understand / can / you / the instructions", after: "?", tense: "Question Word Order (Can + sujeto + verbo)", mode: "order_can", accepted: ["can you understand the instructions"], display: "Can you understand the instructions" },
+      { id: 61, cat: "ORD_CON", before: "To talk about life experiences without a specific past date, we use the", tag: "tiempo verbal", after: ".", tense: "Concepto: Present Perfect", mode: "concept", accepted: ["present perfect", "present perfect tense"], display: "Present perfect" },
+      { id: 62, cat: "ORD_CON", before: "To describe an action happening right at this exact second, we use the", tag: "tiempo verbal", after: ".", tense: "Concepto: Present Continuous", mode: "concept", accepted: ["present continuous", "present continuous tense", "present progressive"], display: "Present continuous" },
+      { id: 63, cat: "ORD_CON", before: "To describe a finished action at a closed time like 'yesterday', we use the", tag: "tiempo verbal", after: ".", tense: "Concepto: Simple Past", mode: "concept", accepted: ["simple past", "past simple", "simple past tense"], display: "Simple past" },
+      { id: 64, cat: "ORD_CON", before: "", tag: "modal de habilidad", after: "your cousin swim across the entire Olympic pool?", tense: "Modal Ability (Can)", mode: "modal_can", accepted: ["can"], display: "Can" }
     ];
 
     let usedIds = new Set();
@@ -511,6 +531,7 @@
         .trim()
         .toLowerCase()
         .replace(/[\u2018\u2019\u02BC]/g, "'")
+        .replace(/[?.!]+$/g, "")
         .replace(/\s+/g, " ");
     }
 
@@ -523,14 +544,21 @@
       return copy;
     }
 
-    function buildRoundOfFive() {
-      if (usedIds.size >= questionBank.length - 4) {
+    function formatSentenceHTML(q) {
+      const prefix = q.before ? `${q.before} ` : "";
+      const afterSpacer = /^[.,?!]/.test(q.after) ? "" : " ";
+      return `${prefix}__________ <span class="prompt-tag">(${q.tag})</span>${afterSpacer}${q.after}`;
+    }
+
+    function buildRoundOfEight() {
+      if (usedIds.size >= questionBank.length) {
         usedIds.clear();
       }
 
-      const categories = ["SP_AFF", "SP_AUX", "PP", "PC", "FUT"];
+      const categories = ["SP_AFF", "SP_AUX", "PP", "PC", "FUT", "VPAT", "COMP", "ORD_CON"];
       const picked = [];
 
+      // 1 reactivo al azar de cada una de las 8 categorías
       categories.forEach(cat => {
         const available = shuffle(questionBank.filter(q => q.cat === cat && !usedIds.has(q.id)));
         if (available.length > 0) {
@@ -540,14 +568,7 @@
         }
       });
 
-      while (picked.length < 5) {
-        const remaining = shuffle(questionBank.filter(q => !usedIds.has(q.id)));
-        if (remaining.length === 0) break;
-        const item = remaining[0];
-        picked.push({ ...item, status: "pending", lastUserAnswer: "" });
-        usedIds.add(item.id);
-      }
-
+      // Orden completamente aleatorio dentro de la ronda
       return shuffle(picked);
     }
 
@@ -568,7 +589,7 @@
       roundScore = 0;
       currentIdx = 0;
       isRedemptionMode = false;
-      currentRoundDeck = buildRoundOfFive();
+      currentRoundDeck = buildRoundOfEight();
 
       document.getElementById("startScreen").classList.add("hidden");
       document.getElementById("resultScreen").classList.add("hidden");
@@ -578,10 +599,10 @@
     }
 
     function startRedemption() {
-      const missed = currentRoundDeck.filter(q => q.status !== "ok" && q.status !== "recovered");
+      const missed = currentRoundDeck.filter(q => q.status === "wrong");
       if (missed.length === 0) return;
 
-      currentRoundDeck = missed;
+      currentRoundDeck = shuffle(missed);
       currentIdx = 0;
       isRedemptionMode = true;
 
@@ -596,17 +617,27 @@
       attempts = 0;
 
       const labelPrefix = isRedemptionMode ? `Repaso R${roundNumber}` : `Ronda ${roundNumber}`;
-      document.getElementById("progressText").textContent = `${labelPrefix} • Oración ${currentIdx + 1} de ${currentRoundDeck.length}`;
+      document.getElementById("progressText").textContent = `${labelPrefix} • Reactivo ${currentIdx + 1} de ${currentRoundDeck.length}`;
       document.getElementById("scoreText").textContent = `Puntos ronda: ${roundScore}`;
       document.getElementById("progressFill").style.width = `${(currentIdx / currentRoundDeck.length) * 100}%`;
 
-      const prefixSpace = q.before ? `${q.before} ` : "";
-      document.getElementById("sentenceBox").innerHTML =
-        `${prefixSpace}__________ <span class="prompt-tag">(${q.tag})</span> ${q.after}`;
+      document.getElementById("sentenceBox").innerHTML = formatSentenceHTML(q);
 
-      document.getElementById("inputLabel").textContent = q.isAux
-        ? "Escribe únicamente el auxiliar faltante:"
-        : "Escribe el verbo conjugado:";
+      const labelMap = {
+        aux: "Escribe únicamente el auxiliar faltante:",
+        modal_can: "Escribe el verbo modal de habilidad:",
+        order_can: "Escribe la pregunta ordenada (sin el signo de interrogación final):",
+        concept: "Escribe el nombre del tiempo verbal en inglés:",
+        superlative: "Escribe la forma superlativa completa (incluye 'the'):",
+        superlative_cvc: "Escribe la forma superlativa completa (incluye 'the'):",
+        superlative_long: "Escribe la forma superlativa completa (incluye 'the'):",
+        comparative_short: "Escribe únicamente el adjetivo en forma comparativa:",
+        comparative_long: "Escribe únicamente la forma comparativa:",
+        pattern_ing: "Escribe la forma correcta del verbo:",
+        pattern_to: "Escribe la forma correcta del verbo:",
+        verb: "Escribe el verbo conjugado:"
+      };
+      document.getElementById("inputLabel").textContent = labelMap[q.mode] || "Escribe tu respuesta:";
 
       const input = document.getElementById("answerInput");
       input.value = "";
@@ -622,50 +653,123 @@
     }
 
     function diagnoseError(userAns, q) {
-      // 1. Caso especial: reactivos donde solo se pide el auxiliar
-      if (q.isAux) {
+      // 1. Patrones verbales (-ing vs to + verbo)
+      if (q.mode === "pattern_ing") {
+        if (userAns.includes("driveing")) {
+          return "Detalle de ortografía: cuando el verbo termina en -e muda (drive), elimina la 'e' antes de agregar -ing (driving).";
+        }
+        if (userAns.startsWith("to ")) {
+          return "Después de verbos como 'enjoy', 'practice' o 'avoid', el segundo verbo debe ir en gerundio (-ing), nunca con 'to'.";
+        }
+        return "Después de 'enjoy', 'practice' o 'avoid', el verbo siguiente se escribe con terminación -ing.";
+      }
+      if (q.mode === "pattern_to") {
+        if (userAns.endsWith("ing")) {
+          return "Después de verbos de intención o decisión como 'plan', 'agree', 'decide', 'want' o 'need', usa el infinitivo con 'to' (to + verbo base), no -ing.";
+        }
+        if (!userAns.startsWith("to ")) {
+          return "Te falta la palabra 'to' antes del verbo en forma base (to + verbo).";
+        }
+      }
+
+      // 2. Comparativos y Superlativos
+      if (q.mode.startsWith("superlative")) {
+        if (!userAns.startsWith("the ")) {
+          return "En el grado superlativo (uno contra todo un grupo) siempre debes escribir el artículo 'the' antes del adjetivo.";
+        }
+        if (q.mode === "superlative_cvc" && /(hotest|bigest)/.test(userAns)) {
+          return "Regla de ortografía (consonante-vocal-consonante): en adjetivos cortos como 'hot' o 'big', duplica la última consonante antes de -est (the hottest, the biggest).";
+        }
+        if (q.mode === "superlative_long" && userAns.includes("interestingest")) {
+          return "Los adjetivos largos de tres o más sílabas no llevan -est; se forman con 'the most + adjetivo'.";
+        }
+        return "Revisa la estructura del superlativo: 'the + adjetivo-est' (cortos) o 'the most + adjetivo' (largos).";
+      }
+      if (q.mode === "comparative_short" || q.mode === "comparative_long") {
+        if (userAns.endsWith(" than")) {
+          return "La palabra 'than' ya está escrita en la oración; escribe únicamente el comparativo sin repetir 'than'.";
+        }
+        if (q.mode === "comparative_short") {
+          if (userAns.startsWith("more ")) {
+            return "Los adjetivos cortos de una sílaba (cheap, clear) forman su comparativo agregando -er al final, sin usar 'more'.";
+          }
+          return "Como la oración compara dos elementos ('than'), agrega -er al adjetivo corto.";
+        }
+        if (q.mode === "comparative_long") {
+          if (userAns.endsWith("er")) {
+            return "Los adjetivos largos como 'expensive' no llevan terminación -er; usa 'more + adjetivo'.";
+          }
+          return "Para comparar con un adjetivo largo usa 'more' antes del adjetivo.";
+        }
+      }
+
+      // 3. Orden de preguntas con CAN y Conceptos
+      if (q.mode === "order_can") {
+        if (/^(your brother|they|she|you)\s+can\b/.test(userAns)) {
+          return "En preguntas, el modal 'can' debe ir al principio antes del sujeto: Can + sujeto + verbo base.";
+        }
+        if (/\b(cooks|plays|drives|understands|to cook|to play|to drive|to understand)\b/.test(userAns)) {
+          return "Después del modal 'can', el verbo principal siempre va en su forma base (sin -s final y sin 'to').";
+        }
+        return "Sigue el orden correcto de pregunta: Can + sujeto + verbo base + complemento.";
+      }
+      if (q.mode === "concept") {
+        return "Lee la función descrita: experiencias conectadas al presente (Present perfect), acción en este instante (Present continuous) o hecho cerrado en el pasado (Simple past).";
+      }
+      if (q.mode === "modal_can") {
+        return "Para preguntar por la habilidad de alguien en presente, usa el modal 'Can' al inicio de la pregunta.";
+      }
+
+      // 4. Auxiliares aislados
+      if (q.mode === "aux") {
         if (userAns.split(" ").length > 1) {
-          return "Aquí solo debes escribir el auxiliar (una sola palabra, como did, have, has, am, is, are), porque el verbo principal ya está escrito en la oración.";
+          return "Aquí solo debes escribir el auxiliar (una sola palabra: did, have, has, am, is, are), porque el verbo principal ya aparece en la oración.";
         }
         if (userAns === "had") {
-          return "'had' es para Past Perfect. Revisa si la pregunta habla de una experiencia de vida en Present Perfect (have/has) o de un hecho terminado en Simple Past (did).";
+          return "'had' corresponde al pasado perfecto. Revisa si la pregunta trata de una experiencia de vida en Present Perfect (have/has) o de un hecho terminado en Simple Past (did).";
         }
         if (q.tense.includes("Simple Past")) {
-          return "Fíjate en la expresión de tiempo pasado (yesterday, last...) y en que el verbo principal está en forma base: necesitas el auxiliar 'did'.";
+          return "La expresión de tiempo pasado (yesterday, last...) y el verbo en forma base piden el auxiliar 'did'.";
         }
         if (q.tense.includes("Present Perfect")) {
           if (q.subject === "sing3" && userAns === "have") {
-            return "El sujeto es tercera persona singular (your sister), así que debes usar 'has' en lugar de 'have'.";
+            return "El sujeto es tercera persona singular (your sister), así que corresponde 'has' en lugar de 'have'.";
           }
           if (q.subject !== "sing3" && userAns === "has") {
             return "Con 'you' o sujetos plurales debes usar 'have', nunca 'has'.";
           }
-          return "El verbo principal está en Past Participle (participio pasado) y pregunta por experiencia de vida: usa 'have' o 'has'.";
+          return "El verbo principal está en Past Participle (flown / met) y pregunta por una experiencia de vida: usa 'have' o 'has'.";
         }
         if (q.tense.includes("Present Continuous") || q.tense.includes("Future")) {
           if (userAns === "do" || userAns === "did") {
-            return "No uses 'do/did' cuando el verbo lleva terminación -ing o 'going to'. Usa el verbo 'to be' (am / is / are).";
+            return "No uses 'do/did' cuando el verbo lleva -ing o 'going to'. Usa el verbo 'to be' (am / is / are).";
+          }
+          if (q.subject === "sing3" && (userAns === "are" || userAns === "am")) {
+            return "El sujeto es tercera persona singular (he): usa 'is'.";
+          }
+          if (q.subject === "plur" && (userAns === "is" || userAns === "am")) {
+            return "El sujeto es plural o 'you': usa 'are'.";
           }
           return "Con acciones en progreso (-ing) o planes con 'going to', el auxiliar correcto es 'am', 'is' o 'are' según el sujeto.";
         }
       }
 
-      // 2. Uso de "had" en lugar de "have/has"
+      // 5. Uso de "had" por "have/has"
       if (/^(had|hadn't)\b/.test(userAns) && q.tense.includes("Present Perfect")) {
         return "Usaste 'had' (pasado), pero esta oración conecta con el presente o habla de experiencias actuales. Usa 'have' o 'has'.";
       }
 
-      // 3. Error típico con "did / didn't" + verbo conjugado en pasado
+      // 6. Error con "did / didn't" + verbo conjugado
       if (/^(did|didn't|did not)\s+(went|came|saw|wrote|bought|broke|chose|drank|drove|ate|felt|found|flew|got|gave|had|kept|lost|made|met|spoke|took|studied|planned)\b/.test(userAns)) {
         return "Cuando usas 'did' o 'didn't', el auxiliar ya marca el pasado, así que el verbo principal debe ir en forma base (sin conjugar).";
       }
 
-      // 4. Sobrerregularización (-ed en verbos irregulares)
+      // 7. Sobrerregularización (-ed en verbos irregulares)
       if (/\b(writed|buyed|goed|breaked|choosed|comed|doed|drinked|drived|eated|feeled|finded|flyed|getted|gived|haved|keeped|losed|maked|meeted|readed|seed|speaked|taked|beed)\b/.test(userAns)) {
-        return "Este verbo es irregular: no forma su pasado con terminación -ed. Revisa su forma irregular en la tabla.";
+        return "Este verbo es irregular: no forma su pasado con terminación -ed. Revisa su forma irregular.";
       }
 
-      // 5. Ortografía de -ing y -ed
+      // 8. Ortografía de -ing y -ed
       if (/(writeing|makeing|takeing|comeing|liveing|loseing|chooseing|driveing|giveing|prepareing|hikeing)/.test(userAns)) {
         return "Regla de ortografía: cuando el verbo termina en -e muda (write, make, take, hike, prepare...), elimina la 'e' antes de agregar -ing.";
       }
@@ -676,13 +780,13 @@
         return "Regla de ortografía (consonante-vocal-consonante): duplica la última consonante (planning, planned, getting).";
       }
 
-      // 6. Verbo sin conjugar
+      // 9. Verbo sin conjugar
       const cleanBase = q.tag.replace("not / ", "").trim();
       if (userAns === cleanBase || userAns === q.tag) {
-        return "Escribiste el verbo en su forma base sin conjugar. Lee toda la oración para identificar en qué tiempo ocurre la acción.";
+        return "Escribiste el verbo en su forma base sin conjugar. Lee toda la oración para identificar el contexto temporal.";
       }
 
-      // 7. Diagnósticos por tiempo verbal
+      // 10. Diagnósticos generales por tiempo
       if (q.tense.includes("Simple Past")) {
         if (/^(have|has|'ve|'s|haven't|hasn't)\b/.test(userAns)) {
           return "La oración ubica la acción en un momento pasado ya concluido. No uses have/has; usa Simple Past.";
@@ -728,10 +832,13 @@
       }
 
       if (q.tense.includes("Future")) {
-        return "El contexto señala un plan futuro (Next semester / Next summer): usa 'am / is / are going to + verbo base' (o 'will + verbo base').";
+        if (/^(will|'ll)\b/.test(userAns)) {
+          return "Como la oración indica que ya es un plan decidido de antemano (boleto comprado, inscripción o calendario), usa 'am / is / are going to + verbo base' en lugar de 'will'.";
+        }
+        return "El contexto señala un plan futuro ya decidido: usa 'am / is / are going to + verbo base'.";
       }
 
-      return "Lee nuevamente toda la oración para identificar el tiempo y el sujeto correcto.";
+      return "Lee nuevamente toda la oración para identificar la estructura correcta.";
     }
 
     function checkAnswer() {
@@ -761,7 +868,7 @@
 
           fb.className = "feedback success";
           fb.innerHTML = attempts === 1
-            ? `✅ <strong>¡Correcto!</strong> Estructura aplicada: <strong>${q.tense}</strong>.`
+            ? `✅ <strong>¡Correcto!</strong> Estructura: <strong>${q.tense}</strong>.`
             : `✅ <strong>¡Bien corregido!</strong> (+0.5 pts). Estructura: <strong>${q.tense}</strong>.`;
         } else {
           if (q.status === "wrong") {
@@ -829,19 +936,19 @@
         hour: "2-digit",
         minute: "2-digit"
       });
-      const code = `VA-R${roundNumber}-${Math.round(totalSessionScore * 10)}-${now.getMinutes()}${now.getSeconds()}`;
+      const code = `GL-R${roundNumber}-${Math.round(totalSessionScore * 10)}-${now.getMinutes()}${now.getSeconds()}`;
 
       document.getElementById("roundSummaryTitle").textContent = `Resumen de Ronda ${roundNumber}`;
-      document.getElementById("roundScoreDisplay").textContent = `${roundScore} / 5`;
+      document.getElementById("roundScoreDisplay").textContent = `${roundScore} / 8`;
       document.getElementById("cumulativeDisplay").textContent =
-        `Acumulado total: ${totalSessionScore} / ${roundNumber * 5} pts (${roundNumber} ${roundNumber === 1 ? "ronda" : "rondas"})`;
+        `Acumulado total: ${totalSessionScore} / ${roundNumber * 8} pts (${roundNumber} ${roundNumber === 1 ? "ronda" : "rondas"})`;
 
       document.getElementById("resName").textContent = studentName;
-      document.getElementById("resRounds").textContent = `${roundNumber} (${roundNumber * 5} oraciones practicadas)`;
+      document.getElementById("resRounds").textContent = `${roundNumber} (${roundNumber * 8} reactivos practicados)`;
       document.getElementById("resTime").textContent = timeStr;
       document.getElementById("resCode").textContent = code;
 
-      const toReview = currentRoundDeck.filter(q => q.status !== "ok" && q.status !== "recovered");
+      const toReview = currentRoundDeck.filter(q => q.status === "wrong");
       const retryBtn = document.getElementById("retryMissedBtn");
       const mistakesSec = document.getElementById("mistakesSection");
 
@@ -851,22 +958,19 @@
 
         mistakesSec.classList.remove("hidden");
         const listEl = document.getElementById("reviewList");
-        listEl.innerHTML = toReview.map(m => {
-          const prefixSpace = m.before ? `${m.before} ` : "";
-          return `
-            <div class="review-item">
-              <div style="margin-bottom:4px;">${prefixSpace}__________ <span class="prompt-tag">(${m.tag})</span> ${m.after}</div>
-              <div style="color:var(--error);">Tu respuesta anterior: <strong>${m.lastUserAnswer}</strong></div>
-            </div>
-          `;
-        }).join("");
+        listEl.innerHTML = toReview.map(m => `
+          <div class="review-item">
+            <div style="margin-bottom:4px;">${formatSentenceHTML(m)}</div>
+            <div style="color:var(--error);">Tu respuesta anterior: <strong>${m.lastUserAnswer}</strong></div>
+          </div>
+        `).join("");
       } else {
         retryBtn.classList.add("hidden");
         mistakesSec.classList.add("hidden");
       }
     }
 
-    document.getElementById("answerInput").addEventListener("keypress", function (e) {
+    document.getElementById("answerInput").addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
         e.preventDefault();
         if (!document.getElementById("checkBtn").classList.contains("hidden")) {
