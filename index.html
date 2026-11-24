@@ -1432,3 +1432,17 @@
         mistakesSec.classList.add("hidden");
       }
     }
+
+    document.getElementById("answerInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (!document.getElementById("checkBtn").classList.contains("hidden")) {
+          checkAnswer();
+        } else if (!document.getElementById("nextBtn").classList.contains("hidden")) {
+          nextQuestion();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
