@@ -10,6 +10,7 @@
       --primary-dark: #172554;
       --primary-light: #dbeafe;
       --accent: #0f766e;
+      --accent-dark: #115e59;
       --bg: #f1f5f9;
       --card: #ffffff;
       --text: #0f172a;
@@ -97,7 +98,7 @@
       border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 14px 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       font-size: 0.9rem;
       color: var(--muted);
     }
@@ -109,6 +110,75 @@
 
     .rules-list li:last-child {
       margin-bottom: 0;
+    }
+
+    /* Bloque de consulta de verbos (solo visible en inicio y resumen) */
+    .resource-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .resource-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .resource-sub {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .resource-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 460px) {
+      .resource-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-outline {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-outline:active {
+      transform: scale(0.98);
+    }
+
+    .btn-outline-teal {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-outline-teal:hover {
+      background: #ccfbf1;
     }
 
     .form-group {
@@ -124,7 +194,8 @@
     }
 
     /* 16px evita el zoom automático en Safari de iPhone/iPad */
-    input[type="text"] {
+    input[type="text"],
+    input[type="search"] {
       width: 100%;
       padding: 12px 14px;
       font-size: 16px;
@@ -136,7 +207,8 @@
       color: var(--text);
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus,
+    input[type="search"]:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
     }
@@ -176,7 +248,7 @@
     }
 
     .btn-teal:hover {
-      background: #115e59;
+      background: var(--accent-dark);
     }
 
     .btn-retry {
@@ -322,6 +394,189 @@
       margin-bottom: 10px;
       line-height: 1.6;
     }
+
+    /* MODAL DE LISTA DE 40 VERBOS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      z-index: 999;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      background: #ffffff;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-toolbar {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 8px 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .tab-btn.active.regular-tab {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .modal-body {
+      padding: 16px 18px 20px 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+    }
+
+    .verb-section-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 8px 0 8px 0;
+    }
+
+    .verb-section-title.regular {
+      color: var(--accent);
+      margin-top: 18px;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .verb-table {
+      width: 100%;
+      min-width: 500px;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    .verb-table th {
+      background: var(--primary);
+      color: #ffffff;
+      text-align: left;
+      padding: 8px 10px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .verb-table.regular-tbl th {
+      background: var(--accent);
+    }
+
+    .verb-table td {
+      padding: 7px 10px;
+      border-top: 1px solid #e2e8f0;
+      color: var(--text);
+    }
+
+    .verb-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .verb-table td:first-child {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .spelling-box {
+      margin-top: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+      color: #1e293b;
+    }
+
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .modal-footer a,
+    .modal-footer button {
+      width: auto;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+    }
   </style>
 </head>
 <body>
@@ -343,6 +598,16 @@
         <li>Al terminar cada ronda puedes repetir las que fallaste o iniciar una ronda nueva.</li>
       </ul>
 
+      <!-- ACCESO A LA LISTA DE 40 VERBOS ANTES DE INICIAR -->
+      <div class="resource-card">
+        <div class="resource-title">📚 Material de estudio previo (40 verbos A–Z)</div>
+        <div class="resource-sub">Repasa los verbos irregulares y regulares antes de comenzar. Durante los ejercicios la tabla se ocultará para medir tu dominio real.</div>
+        <div class="resource-actions">
+          <button type="button" class="btn-outline" onclick="openVerbModal()">📖 Ver lista aquí</button>
+          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 Abrir / Descargar PDF</a>
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="studentName">Tu nombre completo:</label>
         <input type="text" id="studentName" placeholder="Escribe tu nombre y apellidos..." autocomplete="name" />
@@ -351,7 +616,7 @@
       <button class="btn btn-primary" onclick="startSession()">Iniciar Ronda 1 (8 reactivos)</button>
     </div>
 
-    <!-- PANTALLA 2: EJERCICIO -->
+    <!-- PANTALLA 2: EJERCICIO (SIN ACCESO A LA TABLA) -->
     <div class="content hidden" id="quizScreen">
       <div class="progress-wrap">
         <div class="progress-meta">
@@ -423,6 +688,15 @@
         🎲 Siguiente ronda de 8 (Nuevos reactivos)
       </button>
 
+      <!-- CONSULTA DE VERBOS ENTRE RONDAS -->
+      <div class="resource-card" style="margin-top: 12px; margin-bottom: 14px;">
+        <div class="resource-title">📖 ¿Necesitas repasar algún verbo antes de continuar?</div>
+        <div class="resource-actions" style="margin-top: 8px;">
+          <button type="button" class="btn-outline" onclick="openVerbModal()">Ver tabla de 40 verbos</button>
+          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 PDF de verbos</a>
+        </div>
+      </div>
+
       <div id="mistakesSection" class="hidden" style="margin-top: 14px;">
         <h3 style="font-size: 1rem; margin-bottom: 6px;">Reactivos pendientes de esta ronda:</h3>
         <div class="review-list" id="reviewList"></div>
@@ -432,7 +706,196 @@
     </div>
   </div>
 
+  <!-- MODAL INTEGRADO CON LA LISTA DE 40 VERBOS -->
+  <div class="modal-overlay hidden" id="verbModal" role="dialog" aria-modal="true" aria-labelledby="verbModalTitle" onclick="handleModalBackdrop(event)">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2 id="verbModalTitle">Essential Course Verbs (A–Z)</h2>
+        <button type="button" class="close-btn" onclick="closeVerbModal()">✕ Cerrar</button>
+      </div>
+
+      <div class="modal-toolbar">
+        <input
+          type="search"
+          id="verbSearch"
+          placeholder="Buscar verbo en inglés o español (ej. write, escribir)..."
+          oninput="renderVerbTables()"
+          autocomplete="off"
+        />
+        <div class="tab-row">
+          <button type="button" class="tab-btn active" id="tabAll" onclick="setVerbFilter('all')">Todos (40)</button>
+          <button type="button" class="tab-btn" id="tabIrreg" onclick="setVerbFilter('irregular')">Irregulares (25)</button>
+          <button type="button" class="tab-btn" id="tabReg" onclick="setVerbFilter('regular')">Regulares (15)</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="verbModalBody"></div>
+
+      <div class="modal-footer">
+        <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 Descargar PDF</a>
+        <button type="button" class="btn btn-primary" onclick="closeVerbModal()">Listo, volver a la práctica</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Lista oficial de 40 verbos esenciales (25 irregulares + 15 regulares, orden A-Z)
+    const verbData = {
+      irregular: [
+        { base: "be", past: "was / were", part: "been", ing: "being", es: "ser / estar" },
+        { base: "break", past: "broke", part: "broken", ing: "breaking", es: "romper / quebrar" },
+        { base: "buy", past: "bought", part: "bought", ing: "buying", es: "comprar" },
+        { base: "choose", past: "chose", part: "chosen", ing: "choosing", es: "elegir / escoger" },
+        { base: "come", past: "came", part: "come", ing: "coming", es: "venir / llegar" },
+        { base: "do", past: "did", part: "done", ing: "doing", es: "hacer" },
+        { base: "drink", past: "drank", part: "drunk", ing: "drinking", es: "beber / tomar" },
+        { base: "drive", past: "drove", part: "driven", ing: "driving", es: "manejar / conducir" },
+        { base: "eat", past: "ate", part: "eaten", ing: "eating", es: "comer" },
+        { base: "feel", past: "felt", part: "felt", ing: "feeling", es: "sentir / sentirse" },
+        { base: "find", past: "found", part: "found", ing: "finding", es: "encontrar" },
+        { base: "fly", past: "flew", part: "flown", ing: "flying", es: "volar" },
+        { base: "get", past: "got", part: "gotten", ing: "getting", es: "obtener / conseguir / llegar" },
+        { base: "give", past: "gave", part: "given", ing: "giving", es: "dar" },
+        { base: "go", past: "went", part: "gone", ing: "going", es: "ir" },
+        { base: "have", past: "had", part: "had", ing: "having", es: "tener / haber" },
+        { base: "keep", past: "kept", part: "kept", ing: "keeping", es: "mantener / guardar" },
+        { base: "lose", past: "lost", part: "lost", ing: "losing", es: "perder" },
+        { base: "make", past: "made", part: "made", ing: "making", es: "hacer / fabricar" },
+        { base: "meet", past: "met", part: "met", ing: "meeting", es: "conocer / reunirse" },
+        { base: "read", past: "read (/red/)", part: "read (/red/)", ing: "reading", es: "leer" },
+        { base: "see", past: "saw", part: "seen", ing: "seeing", es: "ver" },
+        { base: "speak", past: "spoke", part: "spoken", ing: "speaking", es: "hablar" },
+        { base: "take", past: "took", part: "taken", ing: "taking", es: "tomar / llevar" },
+        { base: "write", past: "wrote", part: "written", ing: "writing", es: "escribir" }
+      ],
+      regular: [
+        { base: "assist", past: "assisted", part: "assisted", ing: "assisting", es: "ayudar / asistir" },
+        { base: "clean", past: "cleaned", part: "cleaned", ing: "cleaning", es: "limpiar" },
+        { base: "decide", past: "decided", part: "decided", ing: "deciding", es: "decidir" },
+        { base: "enjoy", past: "enjoyed", part: "enjoyed", ing: "enjoying", es: "disfrutar" },
+        { base: "finish", past: "finished", part: "finished", ing: "finishing", es: "terminar / finalizar" },
+        { base: "help", past: "helped", part: "helped", ing: "helping", es: "ayudar" },
+        { base: "hike", past: "hiked", part: "hiked", ing: "hiking", es: "hacer senderismo / caminar" },
+        { base: "learn", past: "learned", part: "learned", ing: "learning", es: "aprender" },
+        { base: "live", past: "lived", part: "lived", ing: "living", es: "vivir" },
+        { base: "plan", past: "planned", part: "planned", ing: "planning", es: "planear / planificar" },
+        { base: "play", past: "played", part: "played", ing: "playing", es: "jugar / tocar (instrumento)" },
+        { base: "prepare", past: "prepared", part: "prepared", ing: "preparing", es: "preparar" },
+        { base: "study", past: "studied", part: "studied", ing: "studying", es: "estudiar" },
+        { base: "visit", past: "visited", part: "visited", ing: "visiting", es: "visitar" },
+        { base: "work", past: "worked", part: "worked", ing: "working", es: "trabajar" }
+      ]
+    };
+
+    let verbFilter = "all";
+
+    function openVerbModal() {
+      document.getElementById("verbSearch").value = "";
+      setVerbFilter("all");
+      document.getElementById("verbModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeVerbModal() {
+      document.getElementById("verbModal").classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    function handleModalBackdrop(e) {
+      if (e.target.id === "verbModal") {
+        closeVerbModal();
+      }
+    }
+
+    function setVerbFilter(mode) {
+      verbFilter = mode;
+      document.getElementById("tabAll").className = "tab-btn" + (mode === "all" ? " active" : "");
+      document.getElementById("tabIrreg").className = "tab-btn" + (mode === "irregular" ? " active" : "");
+      document.getElementById("tabReg").className = "tab-btn" + (mode === "regular" ? " active regular-tab" : "");
+      renderVerbTables();
+    }
+
+    function buildVerbTableHTML(list, isRegular) {
+      if (list.length === 0) return "";
+      const rows = list.map(v => `
+        <tr>
+          <td>${v.base}</td>
+          <td>${v.past}</td>
+          <td>${v.part}</td>
+          <td>${v.ing}</td>
+          <td>${v.es}</td>
+        </tr>
+      `).join("");
+
+      return `
+        <div class="table-scroll">
+          <table class="verb-table ${isRegular ? "regular-tbl" : ""}">
+            <thead>
+              <tr>
+                <th>Base Form</th>
+                <th>Simple Past</th>
+                <th>Past Participle</th>
+                <th>-ing Form</th>
+                <th>Español</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderVerbTables() {
+      const query = document.getElementById("verbSearch").value.trim().toLowerCase();
+      const matches = (v) => {
+        if (!query) return true;
+        return (
+          v.base.toLowerCase().includes(query) ||
+          v.past.toLowerCase().includes(query) ||
+          v.part.toLowerCase().includes(query) ||
+          v.ing.toLowerCase().includes(query) ||
+          v.es.toLowerCase().includes(query)
+        );
+      };
+
+      const irregList = (verbFilter === "all" || verbFilter === "irregular")
+        ? verbData.irregular.filter(matches)
+        : [];
+      const regList = (verbFilter === "all" || verbFilter === "regular")
+        ? verbData.regular.filter(matches)
+        : [];
+
+      let html = "";
+
+      if (irregList.length > 0) {
+        html += `<div class="verb-section-title">Irregular Verbs (${irregList.length}) — A–Z</div>`;
+        html += buildVerbTableHTML(irregList, false);
+      }
+
+      if (regList.length > 0) {
+        html += `<div class="verb-section-title regular">Regular Verbs (${regList.length}) — A–Z</div>`;
+        html += buildVerbTableHTML(regList, true);
+      }
+
+      if (!html) {
+        html = `<p style="text-align:center;color:#64748b;padding:24px 0;">No se encontraron verbos con "${query}".</p>`;
+      } else {
+        html += `
+          <div class="spelling-box">
+            <strong>Ortografía rápida:</strong> elimina <em>-e</em> muda en <em>-ing</em> (<strong>writing, hiking, preparing</strong>); conserva la <em>y</em> en <strong>studying</strong> y cámbiala en <strong>studied</strong>; duplica consonante CVC en <strong>planned / planning / getting</strong>.
+          </div>
+        `;
+      }
+
+      document.getElementById("verbModalBody").innerHTML = html;
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !document.getElementById("verbModal").classList.contains("hidden")) {
+        closeVerbModal();
+      }
+    });
+
     // Banco auditado de 64 reactivos (8 categorías x 8 reactivos = 8 rondas completas sin repetición)
     const questionBank = [
       // 1. SIMPLE PAST AFFIRMATIVE (SP_AFF) - 8 reactivos
@@ -558,7 +1021,6 @@
       const categories = ["SP_AFF", "SP_AUX", "PP", "PC", "FUT", "VPAT", "COMP", "ORD_CON"];
       const picked = [];
 
-      // 1 reactivo al azar de cada una de las 8 categorías
       categories.forEach(cat => {
         const available = shuffle(questionBank.filter(q => q.cat === cat && !usedIds.has(q.id)));
         if (available.length > 0) {
@@ -568,7 +1030,6 @@
         }
       });
 
-      // Orden completamente aleatorio dentro de la ronda
       return shuffle(picked);
     }
 
@@ -585,6 +1046,7 @@
     }
 
     function startNewRound() {
+      closeVerbModal();
       roundNumber++;
       roundScore = 0;
       currentIdx = 0;
@@ -599,6 +1061,7 @@
     }
 
     function startRedemption() {
+      closeVerbModal();
       const missed = currentRoundDeck.filter(q => q.status === "wrong");
       if (missed.length === 0) return;
 
@@ -969,17 +1432,3 @@
         mistakesSec.classList.add("hidden");
       }
     }
-
-    document.getElementById("answerInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        if (!document.getElementById("checkBtn").classList.contains("hidden")) {
-          checkAnswer();
-        } else if (!document.getElementById("nextBtn").classList.contains("hidden")) {
-          nextQuestion();
-        }
-      }
-    });
-  </script>
-</body>
-</html>
