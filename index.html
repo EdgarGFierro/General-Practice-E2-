@@ -112,7 +112,7 @@
       margin-bottom: 0;
     }
 
-    /* Bloque de consulta de verbos (solo visible en inicio y resumen) */
+    /* Bloque de material de estudio (solo visible en inicio y resumen) */
     .resource-card {
       background: #f8fafc;
       border: 1.5px solid #cbd5e1;
@@ -179,6 +179,19 @@
 
     .btn-outline-teal:hover {
       background: #ccfbf1;
+    }
+
+    .btn-outline-guide {
+      border-color: #4338ca;
+      color: #4338ca;
+    }
+
+    .btn-outline-guide:hover {
+      background: #e0e7ff;
+    }
+
+    .full-span {
+      grid-column: 1 / -1;
     }
 
     .form-group {
@@ -598,13 +611,14 @@
         <li>Al terminar cada ronda puedes repetir las que fallaste o iniciar una ronda nueva.</li>
       </ul>
 
-      <!-- ACCESO A LA LISTA DE 40 VERBOS ANTES DE INICIAR -->
+      <!-- ACCESO A MATERIAL DE ESTUDIO ANTES DE INICIAR -->
       <div class="resource-card">
-        <div class="resource-title">📚 Material de estudio previo (40 verbos A–Z)</div>
-        <div class="resource-sub">Repasa los verbos irregulares y regulares antes de comenzar. Durante los ejercicios la tabla se ocultará para medir tu dominio real.</div>
+        <div class="resource-title">📚 Material de estudio previo</div>
+        <div class="resource-sub">Repasa las reglas y los 40 verbos antes de comenzar. Durante los ejercicios el material se ocultará para medir tu dominio real.</div>
         <div class="resource-actions">
           <button type="button" class="btn-outline" onclick="openVerbModal()">📖 Ver lista aquí</button>
-          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 Abrir / Descargar PDF</a>
+          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 PDF de verbos</a>
+          <a class="btn-outline btn-outline-guide full-span" href="Repaso%20general.pdf" target="_blank" rel="noopener">📘 Abrir / Ver Repaso general (PDF)</a>
         </div>
       </div>
 
@@ -616,7 +630,7 @@
       <button class="btn btn-primary" onclick="startSession()">Iniciar Ronda 1 (8 reactivos)</button>
     </div>
 
-    <!-- PANTALLA 2: EJERCICIO (SIN ACCESO A LA TABLA) -->
+    <!-- PANTALLA 2: EJERCICIO (SIN ACCESO A MATERIAL) -->
     <div class="content hidden" id="quizScreen">
       <div class="progress-wrap">
         <div class="progress-meta">
@@ -688,12 +702,13 @@
         🎲 Siguiente ronda de 8 (Nuevos reactivos)
       </button>
 
-      <!-- CONSULTA DE VERBOS ENTRE RONDAS -->
+      <!-- CONSULTA DE MATERIAL ENTRE RONDAS -->
       <div class="resource-card" style="margin-top: 12px; margin-bottom: 14px;">
-        <div class="resource-title">📖 ¿Necesitas repasar algún verbo antes de continuar?</div>
+        <div class="resource-title">📖 ¿Necesitas repasar antes de continuar?</div>
         <div class="resource-actions" style="margin-top: 8px;">
           <button type="button" class="btn-outline" onclick="openVerbModal()">Ver tabla de 40 verbos</button>
           <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 PDF de verbos</a>
+          <a class="btn-outline btn-outline-guide full-span" href="Repaso%20general.pdf" target="_blank" rel="noopener">📘 Abrir / Ver Repaso general (PDF)</a>
         </div>
       </div>
 
