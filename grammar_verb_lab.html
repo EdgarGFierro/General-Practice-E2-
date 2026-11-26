@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Grammar &amp; Verb Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #172554;
+      --primary-light: #dbeafe;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+      --indigo: #4338ca;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --error: #b91c1c;
+      --error-bg: #fee2e2;
+      --warn: #b45309;
+      --warn-bg: #fef3c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 10px 28px -5px rgba(15, 23, 42, 0.09);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .header {
+        padding: 16px 18px;
+      }
+      .content {
+        padding: 18px;
+      }
+    }
+
+    .desc-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .desc-box strong {
+      color: var(--text);
+    }
+
+    .rules-list {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .rules-list li {
+      margin-left: 18px;
+      margin-bottom: 6px;
+    }
+
+    .rules-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Bloque de recursos (solo visible en inicio y resumen) */
+    .resource-card {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .resource-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .resource-sub {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .resource-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .resource-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-outline {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+      transition: background-color 0.2s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-outline:active {
+      transform: scale(0.98);
+    }
+
+    .btn-outline-teal {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-outline-teal:hover {
+      background: #ccfbf1;
+    }
+
+    .btn-outline-indigo {
+      border-color: var(--indigo);
+      color: var(--indigo);
+    }
+
+    .btn-outline-indigo:hover {
+      background: #e0e7ff;
+    }
+
+    .full-span {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    /* 16px obligatorio para evitar auto-zoom en Safari iOS */
+    input[type="text"],
+    input[type="search"] {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #ffffff;
+      color: var(--text);
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="search"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+
+    input[type="text"]:disabled {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .inline-alert {
+      display: none;
+      background: var(--warn-bg);
+      color: var(--warn);
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .inline-alert.is-visible {
+      display: block;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.2s;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-teal {
+      background: var(--accent);
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .btn-teal:hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-retry {
+      background: #d97706;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .btn-retry:hover {
+      background: #b45309;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+      margin-top: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .progress-wrap {
+      margin-bottom: 16px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .sentence-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      font-size: 1.08rem;
+      line-height: 1.72;
+      color: var(--text);
+    }
+
+    .prompt-tag {
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.92rem;
+      display: inline-block;
+    }
+
+    .sao-chip {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    /* Botones táctiles de opción múltiple */
+    .choice-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .choice-btn {
+      width: 100%;
+      min-height: 52px;
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      background: #ffffff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.15s, background-color 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .choice-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+
+    .choice-btn:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    .choice-btn:disabled {
+      cursor: default;
+    }
+
+    .choice-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .choice-btn.choice-correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .choice-btn.choice-correct .choice-letter {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .choice-btn.choice-wrong {
+      border-color: var(--error);
+      background: var(--error-bg);
+      color: var(--error);
+      opacity: 0.78;
+    }
+
+    .choice-btn.choice-wrong .choice-letter {
+      background: var(--error);
+      color: #ffffff;
+    }
+
+    .feedback {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-top: 14px;
+      font-size: 0.93rem;
+      line-height: 1.52;
+    }
+
+    .feedback.is-visible {
+      display: block;
+    }
+
+    .feedback.success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #86efac;
+    }
+
+    .feedback.warn {
+      background: var(--warn-bg);
+      color: var(--warn);
+      border: 1px solid #fcd34d;
+    }
+
+    .feedback.error {
+      background: var(--error-bg);
+      color: var(--error);
+      border: 1px solid #fca5a5;
+    }
+
+    .feedback code {
+      background: rgba(15, 23, 42, 0.08);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    /* Solo para pantallas y bloques internos — NUNCA usado en .modal-overlay */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Pantalla de resumen y Radiografía */
+    .receipt {
+      border: 2px dashed var(--primary);
+      background: #eff6ff;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px solid #bfdbfe;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .receipt-score {
+      font-size: 2.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.89rem;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+    }
+
+    .receipt-row:last-child {
+      border-bottom: none;
+    }
+
+    .radiografia-box {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .radiografia-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .topic-pill {
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border: 1px solid transparent;
+    }
+
+    .topic-pill-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      gap: 6px;
+    }
+
+    .topic-pill-sub {
+      font-size: 0.74rem;
+      opacity: 0.9;
+    }
+
+    .topic-pill.status-ok {
+      background: var(--success-bg);
+      color: var(--success);
+      border-color: #86efac;
+    }
+
+    .topic-pill.status-retry {
+      background: var(--warn-bg);
+      color: var(--warn);
+      border-color: #fcd34d;
+    }
+
+    .topic-pill.status-wrong {
+      background: var(--error-bg);
+      color: var(--error);
+      border-color: #fca5a5;
+    }
+
+    .review-list {
+      margin-top: 10px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    .review-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      line-height: 1.58;
+    }
+
+    .review-ref {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--indigo);
+      background: #e0e7ff;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* MODAL A PRUEBA DE SAFARI iOS (SIN .hidden) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.68);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      z-index: 9999;
+    }
+
+    .modal-overlay.is-open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 720px;
+      max-height: 88dvh;
+      max-height: 88vh;
+      background: #ffffff;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+    }
+
+    @supports (max-height: 88dvh) {
+      .modal-sheet {
+        max-height: 88dvh;
+      }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .modal-header h2 {
+      font-size: 1.08rem;
+      font-weight: 800;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 13px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.32);
+    }
+
+    .modal-toolbar {
+      padding: 12px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 96px;
+      padding: 9px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 9px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--muted);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .tab-btn.active.regular-tab {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .modal-body {
+      padding: 14px 18px 20px 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .verb-section-title {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 6px 0 8px 0;
+    }
+
+    .verb-section-title.regular {
+      color: var(--accent);
+      margin-top: 18px;
+    }
+
+    /* Vista Desktop (>= 560px): tabla limpia */
+    .verb-desktop-view {
+      display: block;
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .verb-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .verb-table th {
+      background: var(--primary);
+      color: #ffffff;
+      text-align: left;
+      padding: 8px 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .verb-table.regular-tbl th {
+      background: var(--accent);
+    }
+
+    .verb-table td {
+      padding: 7px 10px;
+      border-top: 1px solid #e2e8f0;
+      color: var(--text);
+    }
+
+    .verb-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .verb-table td:first-child {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    /* Vista Móvil (< 560px): tarjetas apiladas sin scroll horizontal */
+    .verb-mobile-view {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .verb-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .verb-card.regular-card {
+      border-left-color: var(--accent);
+    }
+
+    .verb-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .verb-card-base {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .verb-card.regular-card .verb-card-base {
+      color: var(--accent-dark);
+    }
+
+    .verb-card-es {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .verb-card-forms {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .verb-form-pill {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 5px 6px;
+      font-size: 0.78rem;
+    }
+
+    .verb-form-label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1px;
+    }
+
+    .verb-form-val {
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    @media (max-width: 559px) {
+      .verb-desktop-view {
+        display: none;
+      }
+      .verb-mobile-view {
+        display: flex;
+      }
+    }
+
+    .spelling-box {
+      margin-top: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.83rem;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .modal-footer a,
+    .modal-footer button {
+      width: auto;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 480px) {
+      .modal-footer {
+        flex-direction: column;
+      }
+      .modal-footer a,
+      .modal-footer button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Grammar &amp; Verb Lab</h1>
+      <span class="badge" id="headerBadge">Rondas de 12</span>
+    </header>
+
+    <!-- PANTALLA 1: INICIO -->
+    <main class="content" id="startScreen">
+      <div class="desc-box">
+        <strong>Entrenamiento integral equilibrado:</strong> Practicarás todo el curso en rondas rápidas de <strong>12 reactivos</strong> al azar. Lee cada oración completa antes de contestar.
+      </div>
+
+      <ul class="rules-list">
+        <li>Cada ronda combina los <strong>12 bloques clave del curso</strong>: tiempos verbales, auxiliares, <em>be going to</em>, patrones (<em>to / not to / -ing</em>), comparativos/superlativos, <em>can</em>, cuantificadores, adverbios, <em>stative verbs</em>, <em>whose</em>, preposiciones, preguntas, <em>Let's</em> y plurales.</li>
+        <li>Combina <strong>escritura activa</strong> y <strong>selección rápida</strong> con 2 intentos y diagnóstico inmediato de errores.</li>
+        <li>Al terminar cada ronda verás tu <strong>radiografía por tema</strong> para repetir las pendientes o iniciar una nueva ronda equilibrada.</li>
+      </ul>
+
+      <!-- MATERIAL DE ESTUDIO PREVIO -->
+      <section class="resource-card" aria-label="Material de estudio previo">
+        <div class="resource-title">📚 Material de estudio previo</div>
+        <div class="resource-sub">Repasa las reglas y los 40 verbos antes de iniciar. Durante la práctica el material se oculta para medir tu dominio real.</div>
+        <div class="resource-actions">
+          <button type="button" class="btn-outline" id="openVerbsStartBtn">📖 Ver lista de 40 verbos aquí</button>
+          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 PDF de verbos</a>
+          <a class="btn-outline btn-outline-indigo full-span" href="Repaso%20general.pdf" target="_blank" rel="noopener">📘 Abrir / Ver Repaso general (PDF)</a>
+        </div>
+      </section>
+
+      <div class="form-group">
+        <label for="studentName">Tu nombre completo:</label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre y apellidos..." autocomplete="name" />
+      </div>
+
+      <div class="inline-alert" id="startErrorBox" role="alert">
+        Por favor escribe tu nombre completo antes de comenzar la práctica.
+      </div>
+
+      <button type="button" class="btn btn-primary" id="startSessionBtn">Iniciar Ronda 1 (12 reactivos)</button>
+    </main>
+
+    <!-- PANTALLA 2: PRÁCTICA ACTIVA (SIN ACCESO A MATERIAL) -->
+    <section class="content hidden" id="quizScreen" aria-live="polite">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progressText">Ronda 1 • Reactivo 1 de 12</span>
+          <span id="scoreText">Puntos ronda: 0</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="sentence-card" id="sentenceBox"></div>
+
+      <!-- MODO ESCRITURA ACTIVA -->
+      <div id="textAnswerArea">
+        <div class="form-group">
+          <label for="answerInput" id="inputLabel">Escribe tu respuesta:</label>
+          <input
+            type="text"
+            id="answerInput"
+            placeholder="Escribe aquí..."
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            autocomplete="off"
+          />
+          <div class="sao-chip hidden" id="saoChip">
+            🔍 Filtro S–A–O: Sujeto · Auxiliar · Ortografía
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="checkBtn">Revisar respuesta</button>
+      </div>
+
+      <!-- MODO SELECCIÓN MÚLTIPLE -->
+      <div id="choiceAnswerArea" class="hidden">
+        <label id="choiceLabel" style="margin-bottom: 10px;">Elige la opción correcta:</label>
+        <div class="choice-list" id="choiceList"></div>
+      </div>
+
+      <button type="button" class="btn btn-primary hidden" id="nextBtn">Siguiente →</button>
+
+      <div class="feedback" id="feedbackBox" role="status"></div>
+    </section>
+
+    <!-- PANTALLA 3: RESUMEN Y RADIOGRAFÍA DE RONDA -->
+    <section class="content hidden" id="resultScreen">
+      <div class="receipt">
+        <div class="receipt-header">
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--primary); text-transform: uppercase;" id="roundSummaryTitle">
+            Resumen de Ronda 1
+          </div>
+          <div class="receipt-score" id="roundScoreDisplay">0 / 12</div>
+          <div style="font-size: 0.9rem; color: var(--muted); margin-top: 4px;" id="cumulativeDisplay">
+            Acumulado total: 0 / 12 pts (1 ronda)
+          </div>
+        </div>
+
+        <div class="receipt-row">
+          <span><strong>Estudiante:</strong></span>
+          <span id="resName">-</span>
+        </div>
+        <div class="receipt-row">
+          <span><strong>Rondas completadas:</strong></span>
+          <span id="resRounds">1</span>
+        </div>
+        <div class="receipt-row">
+          <span><strong>Fecha y hora:</strong></span>
+          <span id="resTime">-</span>
+        </div>
+        <div class="receipt-row">
+          <span><strong>Código de verificación:</strong></span>
+          <span id="resCode" style="font-family: monospace; font-weight: 700;">-</span>
+        </div>
+      </div>
+
+      <!-- RADIOGRAFÍA VISUAL POR TEMA -->
+      <div class="radiografia-box">
+        <div class="radiografia-title">📊 Desempeño por tema en esta ronda</div>
+        <div class="topic-grid" id="topicBreakdownGrid"></div>
+      </div>
+
+      <button type="button" class="btn btn-retry hidden" id="retryMissedBtn">
+        🔁 Repetir las que fallé en esta ronda
+      </button>
+
+      <button type="button" class="btn btn-teal" id="newRoundBtn">
+        🎲 Siguiente ronda de 12 (Nuevos reactivos equilibrados)
+      </button>
+
+      <!-- MATERIAL DE ESTUDIO ENTRE RONDAS -->
+      <section class="resource-card" style="margin-top: 12px; margin-bottom: 14px;" aria-label="Material de repaso entre rondas">
+        <div class="resource-title">📖 ¿Necesitas repasar antes de la siguiente ronda?</div>
+        <div class="resource-actions" style="margin-top: 8px;">
+          <button type="button" class="btn-outline" id="openVerbsResultBtn">📖 Ver lista de 40 verbos aquí</button>
+          <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 PDF de verbos</a>
+          <a class="btn-outline btn-outline-indigo full-span" href="Repaso%20general.pdf" target="_blank" rel="noopener">📘 Abrir / Ver Repaso general (PDF)</a>
+        </div>
+      </section>
+
+      <div id="mistakesSection" class="hidden" style="margin-top: 14px;">
+        <h3 style="font-size: 1rem; margin-bottom: 6px;">Reactivos pendientes de esta ronda:</h3>
+        <div class="review-list" id="reviewList"></div>
+      </div>
+
+      <button type="button" class="btn btn-secondary" id="resetAllBtn">Reiniciar desde cero</button>
+    </section>
+  </div>
+
+  <!-- MODAL INTEGRADO DE 40 VERBOS (iOS SAFARI SAFE: USA .is-open, NUNCA .hidden) -->
+  <div class="modal-overlay" id="verbModal" role="dialog" aria-modal="true" aria-labelledby="verbModalTitle">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2 id="verbModalTitle">Essential Course Verbs (40 · A–Z)</h2>
+        <button type="button" class="close-btn" id="closeModalTopBtn">✕ Cerrar</button>
+      </div>
+
+      <div class="modal-toolbar">
+        <input
+          type="search"
+          id="verbSearch"
+          placeholder="Buscar verbo en inglés o español (ej. write, escribir)..."
+          autocomplete="off"
+        />
+        <div class="tab-row">
+          <button type="button" class="tab-btn active" id="tabAll" data-filter="all">Todos (40)</button>
+          <button type="button" class="tab-btn" id="tabIrreg" data-filter="irregular">Irregulares (25)</button>
+          <button type="button" class="tab-btn" id="tabReg" data-filter="regular">Regulares (15)</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="verbModalBody"></div>
+
+      <div class="modal-footer">
+        <a class="btn-outline btn-outline-teal" href="lista-verbos.pdf" target="_blank" rel="noopener">📄 Descargar PDF</a>
+        <button type="button" class="btn btn-primary" id="closeModalBottomBtn">Listo, volver a la práctica</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* =====================================================================
+         1. LISTA OFICIAL DE 40 VERBOS (25 IRREGULARES + 15 REGULARES, A–Z)
+         ===================================================================== */
+      const verbData = {
+        irregular: [
+          { base: "be", past: "was / were", part: "been", ing: "being", es: "ser / estar" },
+          { base: "break", past: "broke", part: "broken", ing: "breaking", es: "romper / quebrar" },
+          { base: "buy", past: "bought", part: "bought", ing: "buying", es: "comprar" },
+          { base: "choose", past: "chose", part: "chosen", ing: "choosing", es: "elegir / escoger" },
+          { base: "come", past: "came", part: "come", ing: "coming", es: "venir / llegar" },
+          { base: "do", past: "did", part: "done", ing: "doing", es: "hacer" },
+          { base: "drink", past: "drank", part: "drunk", ing: "drinking", es: "beber / tomar" },
+          { base: "drive", past: "drove", part: "driven", ing: "driving", es: "manejar / conducir" },
+          { base: "eat", past: "ate", part: "eaten", ing: "eating", es: "comer" },
+          { base: "feel", past: "felt", part: "felt", ing: "feeling", es: "sentir / sentirse" },
+          { base: "find", past: "found", part: "found", ing: "finding", es: "encontrar" },
+          { base: "fly", past: "flew", part: "flown", ing: "flying", es: "volar" },
+          { base: "get", past: "got", part: "gotten", ing: "getting", es: "obtener / conseguir / llegar" },
+          { base: "give", past: "gave", part: "given", ing: "giving", es: "dar" },
+          { base: "go", past: "went", part: "gone", ing: "going", es: "ir" },
+          { base: "have", past: "had", part: "had", ing: "having", es: "tener / haber" },
+          { base: "keep", past: "kept", part: "kept", ing: "keeping", es: "mantener / guardar" },
+          { base: "lose", past: "lost", part: "lost", ing: "losing", es: "perder" },
+          { base: "make", past: "made", part: "made", ing: "making", es: "hacer / fabricar" },
+          { base: "meet", past: "met", part: "met", ing: "meeting", es: "conocer / reunirse" },
+          { base: "read", past: "read (/red/)", part: "read (/red/)", ing: "reading", es: "leer" },
+          { base: "see", past: "saw", part: "seen", ing: "seeing", es: "ver" },
+          { base: "speak", past: "spoke", part: "spoken", ing: "speaking", es: "hablar" },
+          { base: "take", past: "took", part: "taken", ing: "taking", es: "tomar / llevar" },
+          { base: "write", past: "wrote", part: "written", ing: "writing", es: "escribir" }
+        ],
+        regular: [
+          { base: "assist", past: "assisted", part: "assisted", ing: "assisting", es: "ayudar / asistir" },
+          { base: "clean", past: "cleaned", part: "cleaned", ing: "cleaning", es: "limpiar" },
+          { base: "decide", past: "decided", part: "decided", ing: "deciding", es: "decidir" },
+          { base: "enjoy", past: "enjoyed", part: "enjoyed", ing: "enjoying", es: "disfrutar" },
+          { base: "finish", past: "finished", part: "finished", ing: "finishing", es: "terminar / finalizar" },
+          { base: "help", past: "helped", part: "helped", ing: "helping", es: "ayudar" },
+          { base: "hike", past: "hiked", part: "hiked", ing: "hiking", es: "hacer senderismo / caminar" },
+          { base: "learn", past: "learned", part: "learned", ing: "learning", es: "aprender" },
+          { base: "live", past: "lived", part: "lived", ing: "living", es: "vivir" },
+          { base: "plan", past: "planned", part: "planned", ing: "planning", es: "planear / planificar" },
+          { base: "play", past: "played", part: "played", ing: "playing", es: "jugar / tocar (instrumento)" },
+          { base: "prepare", past: "prepared", part: "prepared", ing: "preparing", es: "preparar" },
+          { base: "study", past: "studied", part: "studied", ing: "studying", es: "estudiar" },
+          { base: "visit", past: "visited", part: "visited", ing: "visiting", es: "visitar" },
+          { base: "work", past: "worked", part: "worked", ing: "working", es: "trabajar" }
+        ]
+      };
+
+      /* =====================================================================
+         2. DEFINICIÓN DE 12 SLOTS ESTRATIFICADOS (PROBABILIDAD EXACTA)
+         ===================================================================== */
+      const slotDefinitions = [
+        { key: "SP_AFF",    order: 1,  label: "Simple Past",        guideRef: "Sección 2.2",      subtopics: ["SP_IRREG", "SP_SPELL"] },
+        { key: "SP_AUX",    order: 2,  label: "Did / Didn't",       guideRef: "Sección 2.2",      subtopics: ["SP_Q", "SP_NEG"] },
+        { key: "PP",        order: 3,  label: "Present Perfect",    guideRef: "Sección 2.3",      subtopics: ["PP_STATEMENT", "PP_EXP_Q"] },
+        { key: "PC",        order: 4,  label: "Present Continuous", guideRef: "Sección 2.1",      subtopics: ["PC_AFF", "PC_SPELL_Q"] },
+        { key: "FUT",       order: 5,  label: "Be going to",        guideRef: "Sección 2.4",      subtopics: ["FUT_AFF", "FUT_NEG_Q"] },
+        { key: "VPAT",      order: 6,  label: "Patrones verbales",  guideRef: "Sección 4",        subtopics: ["VPAT_TO", "VPAT_NOT_TO", "VPAT_ING"] },
+        { key: "COMP",      order: 7,  label: "Comp. / Superl.",    guideRef: "Sección 5",        subtopics: ["COMP_ER", "SUP_EST"] },
+        { key: "CAN_CON",   order: 8,  label: "Modal Can / Tiempos",guideRef: "Secciones 2 y 3",  subtopics: ["CAN", "CONCEPT"] },
+        { key: "QUANT_ADV", order: 9,  label: "Cuantif. / Adverbios",guideRef: "Secciones 6 y 7", subtopics: ["QUANT", "ADV"] },
+        { key: "STAT_WHOSE",order: 10, label: "Stative / Whose",    guideRef: "Secciones 9 y 10", subtopics: ["STATIVE", "WHOSE"] },
+        { key: "PREP_QW",   order: 11, label: "Prep. / Preguntas",  guideRef: "Sección 10",       subtopics: ["PREP", "QW"] },
+        { key: "LETS_PLUR", order: 12, label: "Let's / Plurales",   guideRef: "Secciones 9 y 10", subtopics: ["LETS", "PLUR"] }
+      ];
+
+      /* =====================================================================
+         3. BANCO AUDITADO DE 97 REACTIVOS ORIGINALES (12 SLOTS COMPLETOS)
+         ===================================================================== */
+      const questionBank = [
+        // --- SLOT 1: SP_AFF (8 text items) ---
+        { id: 1, slot: "SP_AFF", subtopic: "SP_IRREG", inputType: "text", showSAO: true, before: "Yesterday afternoon, my sister", tag: "buy", after: "a warm coat at the market.", tense: "Simple Past (irregular)", subject: "sing3", mode: "verb", accepted: ["bought"], display: "bought" },
+        { id: 2, slot: "SP_AFF", subtopic: "SP_IRREG", inputType: "text", showSAO: true, before: "When I was ten years old, I", tag: "break", after: "my left arm playing soccer.", tense: "Simple Past (irregular)", subject: "I", mode: "verb", accepted: ["broke"], display: "broke" },
+        { id: 3, slot: "SP_AFF", subtopic: "SP_IRREG", inputType: "text", showSAO: true, before: "Our neighbor", tag: "drive", after: "all night to reach the coast yesterday.", tense: "Simple Past (irregular)", subject: "sing3", mode: "verb", accepted: ["drove"], display: "drove" },
+        { id: 4, slot: "SP_AFF", subtopic: "SP_IRREG", inputType: "text", showSAO: true, before: "The coach", tag: "give", after: "clear instructions before the game started.", tense: "Simple Past (irregular)", subject: "sing3", mode: "verb", accepted: ["gave"], display: "gave" },
+        { id: 5, slot: "SP_AFF", subtopic: "SP_IRREG", inputType: "text", showSAO: true, before: "I", tag: "lose", after: "my backpack keys on the bus yesterday afternoon.", tense: "Simple Past (irregular)", subject: "I", mode: "verb", accepted: ["lost"], display: "lost" },
+        { id: 6, slot: "SP_AFF", subtopic: "SP_SPELL", inputType: "text", showSAO: true, before: "My roommate", tag: "take", after: "the wrong bus yesterday morning.", tense: "Simple Past (irregular)", subject: "sing3", mode: "verb", accepted: ["took"], display: "took" },
+        { id: 7, slot: "SP_AFF", subtopic: "SP_SPELL", inputType: "text", showSAO: true, before: "She", tag: "study", after: "architecture in Guadalajara from 2018 to 2022.", tense: "Simple Past (regla -ied)", subject: "sing3", mode: "verb", accepted: ["studied"], display: "studied" },
+        { id: 8, slot: "SP_AFF", subtopic: "SP_SPELL", inputType: "text", showSAO: true, before: "The committee", tag: "plan", after: "the whole music festival six months ago.", tense: "Simple Past (regla CVC)", subject: "sing3", mode: "verb", accepted: ["planned"], display: "planned" },
+
+        // --- SLOT 2: SP_AUX (8 text items: 4 SP_Q + 4 SP_NEG) ---
+        { id: 9, slot: "SP_AUX", subtopic: "SP_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "you see the announcement on the board yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", mode: "aux", accepted: ["did"], display: "Did" },
+        { id: 10, slot: "SP_AUX", subtopic: "SP_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "the technician repair the screen yesterday morning?", tense: "Simple Past (Pregunta)", subject: "sing3", mode: "aux", accepted: ["did"], display: "Did" },
+        { id: 11, slot: "SP_AUX", subtopic: "SP_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "she feel better after resting last night?", tense: "Simple Past (Pregunta)", subject: "sing3", mode: "aux", accepted: ["did"], display: "Did" },
+        { id: 12, slot: "SP_AUX", subtopic: "SP_Q", inputType: "text", showSAO: true, before: "Why", tag: "auxiliar", after: "you choose that topic for your report yesterday?", tense: "Simple Past (Pregunta)", subject: "plur", mode: "aux", accepted: ["did"], display: "did" },
+        { id: 13, slot: "SP_AUX", subtopic: "SP_NEG", inputType: "text", showSAO: true, before: "My cousins", tag: "not / come", after: "to the family dinner last Sunday.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't come", "did not come"], display: "didn't come / did not come" },
+        { id: 14, slot: "SP_AUX", subtopic: "SP_NEG", inputType: "text", showSAO: true, before: "They", tag: "not / go", after: "to the beach last weekend because it rained.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't go", "did not go"], display: "didn't go / did not go" },
+        { id: 15, slot: "SP_AUX", subtopic: "SP_NEG", inputType: "text", showSAO: true, before: "We", tag: "not / have", after: "enough time to finish the lab notes yesterday.", tense: "Simple Past (Negativo)", subject: "plur", mode: "verb", accepted: ["didn't have", "did not have"], display: "didn't have / did not have" },
+        { id: 16, slot: "SP_AUX", subtopic: "SP_NEG", inputType: "text", showSAO: true, before: "He", tag: "not / buy", after: "the train tickets last Friday.", tense: "Simple Past (Negativo)", subject: "sing3", mode: "verb", accepted: ["didn't buy", "did not buy"], display: "didn't buy / did not buy" },
+
+        // --- SLOT 3: PP (8 text items: 4 PP_STATEMENT + 4 PP_EXP_Q) ---
+        { id: 17, slot: "PP", subtopic: "PP_STATEMENT", inputType: "text", showSAO: true, before: "Our lab partner", tag: "clean", after: "all the equipment already, so we can leave.", tense: "Present Perfect", subject: "sing3", trickySubject: "Our lab partner (1 persona)", mode: "verb", accepted: ["has cleaned", "'s cleaned"], display: "has cleaned" },
+        { id: 18, slot: "PP", subtopic: "PP_STATEMENT", inputType: "text", showSAO: true, before: "Our team captain", tag: "pack", after: "all the uniforms already.", tense: "Present Perfect", subject: "sing3", trickySubject: "Our team captain (1 persona)", mode: "verb", accepted: ["has packed", "'s packed"], display: "has packed" },
+        { id: 19, slot: "PP", subtopic: "PP_STATEMENT", inputType: "text", showSAO: true, before: "I", tag: "not / drink", after: "any coffee yet today.", tense: "Present Perfect (Negativo)", subject: "I", mode: "verb", accepted: ["haven't drunk", "have not drunk"], display: "haven't drunk / have not drunk" },
+        { id: 20, slot: "PP", subtopic: "PP_STATEMENT", inputType: "text", showSAO: true, before: "My uncle", tag: "keep", after: "his old vinyl records in the attic since 1998.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has kept", "'s kept"], display: "has kept" },
+        { id: 21, slot: "PP", subtopic: "PP_EXP_Q", inputType: "text", showSAO: true, before: "So far, my friend", tag: "eat", after: "traditional food in three different countries.", tense: "Present Perfect", subject: "sing3", mode: "verb", accepted: ["has eaten", "'s eaten"], display: "has eaten" },
+        { id: 22, slot: "PP", subtopic: "PP_EXP_Q", inputType: "text", showSAO: true, before: "We", tag: "choose", after: "the best date for our group trip already.", tense: "Present Perfect", subject: "plur", mode: "verb", accepted: ["have chosen", "'ve chosen"], display: "have chosen" },
+        { id: 23, slot: "PP", subtopic: "PP_EXP_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "you ever flown in a small airplane?", tense: "Present Perfect (Pregunta)", subject: "plur", mode: "aux", accepted: ["have"], display: "Have" },
+        { id: 24, slot: "PP", subtopic: "PP_EXP_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "your sister ever met a famous musician?", tense: "Present Perfect (Pregunta)", subject: "sing3", mode: "aux", accepted: ["has"], display: "Has" },
+
+        // --- SLOT 4: PC (8 text items: 4 PC_AFF + 4 PC_SPELL_Q) ---
+        { id: 25, slot: "PC", subtopic: "PC_AFF", inputType: "text", showSAO: true, before: "Be quiet! The students", tag: "try", after: "to solve a math puzzle right now.", tense: "Present Continuous", subject: "plur", mode: "verb", accepted: ["are trying", "'re trying"], display: "are trying" },
+        { id: 26, slot: "PC", subtopic: "PC_AFF", inputType: "text", showSAO: true, before: "Look! The chef", tag: "make", after: "fresh tortillas in the kitchen right now.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is making", "'s making"], display: "is making" },
+        { id: 27, slot: "PC", subtopic: "PC_AFF", inputType: "text", showSAO: true, before: "Put on a jacket—it", tag: "get", after: "really cold outside at the moment.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is getting", "'s getting"], display: "is getting" },
+        { id: 28, slot: "PC", subtopic: "PC_AFF", inputType: "text", showSAO: true, before: "Right now, our group leader", tag: "prepare", after: "the slides for the meeting.", tense: "Present Continuous", subject: "sing3", trickySubject: "our group leader (1 persona)", mode: "verb", accepted: ["is preparing", "'s preparing"], display: "is preparing" },
+        { id: 29, slot: "PC", subtopic: "PC_SPELL_Q", inputType: "text", showSAO: true, before: "At this second, the author", tag: "write", after: "the last chapter of her novel.", tense: "Present Continuous", subject: "sing3", mode: "verb", accepted: ["is writing", "'s writing"], display: "is writing" },
+        { id: 30, slot: "PC", subtopic: "PC_SPELL_Q", inputType: "text", showSAO: true, before: "Right now, the musicians", tag: "practice", after: "in the auditorium.", tense: "Present Continuous", subject: "plur", mode: "verb", accepted: ["are practicing", "'re practicing"], display: "are practicing" },
+        { id: 31, slot: "PC", subtopic: "PC_SPELL_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "your classmates rehearsing in the theater right now?", tense: "Present Continuous (Pregunta)", subject: "plur", mode: "aux", accepted: ["are"], display: "Are" },
+        { id: 32, slot: "PC", subtopic: "PC_SPELL_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "the engineer testing the new battery this week?", tense: "Present Continuous (Pregunta)", subject: "sing3", mode: "aux", accepted: ["is"], display: "Is" },
+
+        // --- SLOT 5: FUT (8 text items: 4 FUT_AFF + 4 FUT_NEG_Q) ---
+        { id: 33, slot: "FUT", subtopic: "FUT_AFF", inputType: "text", showSAO: true, before: "She already bought her ticket! Next summer, she", tag: "travel", after: "to Oaxaca.", tense: "Future (be going to)", subject: "sing3", mode: "verb", accepted: ["is going to travel", "'s going to travel"], display: "is going to travel" },
+        { id: 34, slot: "FUT", subtopic: "FUT_AFF", inputType: "text", showSAO: true, before: "It is on our calendar: tomorrow morning, we", tag: "clean", after: "the garage.", tense: "Future (be going to)", subject: "plur", mode: "verb", accepted: ["are going to clean", "'re going to clean"], display: "are going to clean" },
+        { id: 35, slot: "FUT", subtopic: "FUT_AFF", inputType: "text", showSAO: true, before: "He already enrolled in the course! Next semester, he", tag: "learn", after: "German.", tense: "Future (be going to)", subject: "sing3", mode: "verb", accepted: ["is going to learn", "'s going to learn"], display: "is going to learn" },
+        { id: 36, slot: "FUT", subtopic: "FUT_AFF", inputType: "text", showSAO: true, before: "I already signed the lease: next month, I", tag: "live", after: "closer to campus.", tense: "Future (be going to)", subject: "I", mode: "verb", accepted: ["am going to live", "'m going to live"], display: "am going to live" },
+        { id: 37, slot: "FUT", subtopic: "FUT_NEG_Q", inputType: "text", showSAO: true, before: "The traffic hasn't moved in twenty minutes, so Elena", tag: "not / arrive", after: "on time.", tense: "Future negativo (be going to)", subject: "sing3", mode: "verb", accepted: ["isn't going to arrive", "is not going to arrive", "'s not going to arrive"], display: "isn't going to arrive / is not going to arrive" },
+        { id: 38, slot: "FUT", subtopic: "FUT_NEG_Q", inputType: "text", showSAO: true, before: "The sky is completely clear, so it", tag: "not / rain", after: "tonight.", tense: "Future negativo (be going to)", subject: "sing3", mode: "verb", accepted: ["isn't going to rain", "is not going to rain", "'s not going to rain"], display: "isn't going to rain / is not going to rain" },
+        { id: 39, slot: "FUT", subtopic: "FUT_NEG_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "your cousins going to stay at a hotel next week?", tense: "Future (be going to - Pregunta)", subject: "plur", mode: "aux", accepted: ["are"], display: "Are" },
+        { id: 40, slot: "FUT", subtopic: "FUT_NEG_Q", inputType: "text", showSAO: true, before: "", tag: "auxiliar", after: "he going to present his design next Friday?", tense: "Future (be going to - Pregunta)", subject: "sing3", mode: "aux", accepted: ["is"], display: "Is" },
+
+        // --- SLOT 6: VPAT (9 text items: 3 VPAT_TO + 3 VPAT_NOT_TO + 3 VPAT_ING) ---
+        { id: 41, slot: "VPAT", subtopic: "VPAT_TO", inputType: "text", showSAO: true, before: "After checking the budget, our group decided", tag: "rent", after: "a smaller studio.", tense: "Verb Pattern (decide + to + verbo)", mode: "pattern_to", accepted: ["to rent"], display: "to rent" },
+        { id: 42, slot: "VPAT", subtopic: "VPAT_TO", inputType: "text", showSAO: true, before: "Did you manage", tag: "save", after: "all the documents before the laptop turned off?", tense: "Verb Pattern (manage + to + verbo)", mode: "pattern_to", accepted: ["to save"], display: "to save" },
+        { id: 43, slot: "VPAT", subtopic: "VPAT_TO", inputType: "text", showSAO: true, before: "Two volunteers agreed", tag: "organize", after: "the chairs for the talk.", tense: "Verb Pattern (agree + to + verbo)", mode: "pattern_to", accepted: ["to organize"], display: "to organize" },
+        { id: 44, slot: "VPAT", subtopic: "VPAT_NOT_TO", inputType: "text", showSAO: true, before: "Raul promised", tag: "not / tell", after: "anyone about the surprise dinner.", tense: "Infinitivo negativo (not to + verbo)", mode: "pattern_not_to", accepted: ["not to tell"], display: "not to tell" },
+        { id: 45, slot: "VPAT", subtopic: "VPAT_NOT_TO", inputType: "text", showSAO: true, before: "My sister promised", tag: "not / forget", after: "her umbrella this time.", tense: "Infinitivo negativo (not to + verbo)", mode: "pattern_not_to", accepted: ["not to forget"], display: "not to forget" },
+        { id: 46, slot: "VPAT", subtopic: "VPAT_NOT_TO", inputType: "text", showSAO: true, before: "We decided", tag: "not / spend", after: "too much money during the trip.", tense: "Infinitivo negativo (not to + verbo)", mode: "pattern_not_to", accepted: ["not to spend"], display: "not to spend" },
+        { id: 47, slot: "VPAT", subtopic: "VPAT_ING", inputType: "text", showSAO: true, before: "Even on chilly mornings, my dad really enjoys", tag: "cycle", after: "along the coast.", tense: "Verb Pattern (enjoy + -ing)", mode: "pattern_ing", accepted: ["cycling"], display: "cycling" },
+        { id: 48, slot: "VPAT", subtopic: "VPAT_ING", inputType: "text", showSAO: true, before: "On hot weekends, my cousins really like", tag: "swim", after: "in the river.", tense: "Verb Pattern (like + -ing)", mode: "pattern_ing", accepted: ["swimming"], display: "swimming" },
+        { id: 49, slot: "VPAT", subtopic: "VPAT_ING", inputType: "text", showSAO: true, before: "My neighbor avoids", tag: "drive", after: "in heavy fog at night.", tense: "Verb Pattern (avoid + -ing)", mode: "pattern_ing", accepted: ["driving"], display: "driving" },
+
+        // --- SLOT 7: COMP (8 text items: 4 COMP_ER + 4 SUP_EST) ---
+        { id: 50, slot: "COMP", subtopic: "COMP_ER", inputType: "text", showSAO: true, before: "Traveling by train is often", tag: "cheap", after: "than flying.", tense: "Comparativo corto (-er)", mode: "comparative_short", accepted: ["cheaper"], display: "cheaper" },
+        { id: 51, slot: "COMP", subtopic: "COMP_ER", inputType: "text", showSAO: true, before: "This new laptop is much", tag: "expensive", after: "than my old computer.", tense: "Comparativo largo (more + adjetivo)", mode: "comparative_long", accepted: ["more expensive"], display: "more expensive" },
+        { id: 52, slot: "COMP", subtopic: "COMP_ER", inputType: "text", showSAO: true, before: "Studying in a quiet library is much", tag: "good", after: "than studying in a noisy café.", tense: "Comparativo irregular (good → better)", mode: "comparative_irreg", accepted: ["better"], display: "better" },
+        { id: 53, slot: "COMP", subtopic: "COMP_ER", inputType: "text", showSAO: true, before: "The traffic on Monday morning is always", tag: "bad", after: "than on Sunday.", tense: "Comparativo irregular (bad → worse)", mode: "comparative_irreg", accepted: ["worse"], display: "worse" },
+        { id: 54, slot: "COMP", subtopic: "SUP_EST", inputType: "text", showSAO: true, before: "In our entire running club, Sofia is", tag: "fast", after: "runner.", tense: "Superlativo corto (the + -est)", mode: "superlative", accepted: ["the fastest"], display: "the fastest" },
+        { id: 55, slot: "COMP", subtopic: "SUP_EST", inputType: "text", showSAO: true, before: "August is usually", tag: "hot", after: "month of the year in our city.", tense: "Superlativo CVC (the + -ttest)", mode: "superlative_cvc", accepted: ["the hottest"], display: "the hottest" },
+        { id: 56, slot: "COMP", subtopic: "SUP_EST", inputType: "text", showSAO: true, before: "That documentary was", tag: "interesting", after: "film we saw this semester.", tense: "Superlativo largo (the most + adjetivo)", mode: "superlative_long", accepted: ["the most interesting"], display: "the most interesting" },
+        { id: 57, slot: "COMP", subtopic: "SUP_EST", inputType: "text", showSAO: true, before: "Out of all the beaches in our state, this bay has", tag: "clear", after: "water.", tense: "Superlativo corto (the + -est)", mode: "superlative", accepted: ["the clearest"], display: "the clearest" },
+
+        // --- SLOT 8: CAN_CON (8 items: 4 CAN [2 text, 2 choice] + 4 CONCEPT [4 choice]) ---
+        { id: 58, slot: "CAN_CON", subtopic: "CAN", inputType: "text", showSAO: false, before: "Ordena la pregunta:", tag: "can / cook / your brother / Italian food", after: "?", tense: "Pregunta con Can (Can + sujeto + verbo base)", mode: "order_can", accepted: ["can your brother cook italian food"], display: "Can your brother cook Italian food" },
+        { id: 59, slot: "CAN_CON", subtopic: "CAN", inputType: "text", showSAO: false, before: "Ordena la pregunta:", tag: "play / can / they / the piano / well", after: "?", tense: "Pregunta con Can (Can + sujeto + verbo base)", mode: "order_can", accepted: ["can they play the piano well"], display: "Can they play the piano well" },
+        { id: 60, slot: "CAN_CON", subtopic: "CAN", inputType: "choice", prompt: "Selecciona la oración que usa correctamente el modal 'can':", options: ["Can your cousin fix bicycles well?", "Can your cousin fixes bicycles well?", "Does your cousin can fix bicycles well?"], correctOption: "Can your cousin fix bicycles well?", tense: "Modal Can (Pregunta correcta)", mode: "can_choice", display: "Can your cousin fix bicycles well?" },
+        { id: 61, slot: "CAN_CON", subtopic: "CAN", inputType: "choice", prompt: "Selecciona la oración que usa correctamente 'can' o 'can't':", options: ["Can your friend drive a manual truck?", "They can not finish the report tonight?", "I can't a good swimmer."], correctOption: "Can your friend drive a manual truck?", tense: "Modal Can (Estructura correcta)", mode: "can_choice", display: "Can your friend drive a manual truck?" },
+        { id: 62, slot: "CAN_CON", subtopic: "CONCEPT", inputType: "choice", prompt: "¿Qué tiempo verbal se usa para acciones del pasado que siguen conectadas con el presente o experiencias sin fecha exacta?", options: ["Present perfect", "Simple past", "Past perfect"], correctOption: "Present perfect", tense: "Concepto: Present Perfect", mode: "concept_choice", display: "Present perfect" },
+        { id: 63, slot: "CAN_CON", subtopic: "CONCEPT", inputType: "choice", prompt: "¿Qué tiempo verbal se usa para hechos que empezaron y terminaron en una fecha cerrada del pasado (como 'yesterday' o 'in 2021')?", options: ["Simple past", "Present perfect", "Present continuous"], correctOption: "Simple past", tense: "Concepto: Simple Past", mode: "concept_choice", display: "Simple past" },
+        { id: 64, slot: "CAN_CON", subtopic: "CONCEPT", inputType: "choice", prompt: "¿Qué tiempo verbal se usa para acciones que están ocurriendo exactamente en este momento?", options: ["Present continuous", "Simple past", "Future with going to"], correctOption: "Present continuous", tense: "Concepto: Present Continuous", mode: "concept_choice", display: "Present continuous" },
+        { id: 65, slot: "CAN_CON", subtopic: "CONCEPT", inputType: "choice", prompt: "¿Qué estructura expresa un plan futuro ya decidido o una predicción basada en evidencia visible?", options: ["Future with be going to", "Simple past", "Present perfect"], correctOption: "Future with be going to", tense: "Concepto: Future (be going to)", mode: "concept_choice", display: "Future with be going to" },
+
+        // --- SLOT 9: QUANT_ADV (8 items: 4 QUANT [choice] + 4 ADV [text]) ---
+        { id: 66, slot: "QUANT_ADV", subtopic: "QUANT", inputType: "choice", prompt: "We don't have __________ time left before the bus leaves, so let's hurry!", options: ["much", "many", "a few"], correctOption: "much", tense: "Cuantificador incontable (much)", mode: "quant_choice", nounType: "uncountable", nounWord: "time", display: "much" },
+        { id: 67, slot: "QUANT_ADV", subtopic: "QUANT", inputType: "choice", prompt: "We only have __________ minutes left before the lecture starts, so grab a seat.", options: ["a few", "a little", "much"], correctOption: "a few", tense: "Cuantificador contable plural (a few)", mode: "quant_choice", nounType: "countable", nounWord: "minutes", display: "a few" },
+        { id: 68, slot: "QUANT_ADV", subtopic: "QUANT", inputType: "choice", prompt: "There isn't __________ cold water in the bottle anymore.", options: ["much", "many", "a few"], correctOption: "much", tense: "Cuantificador incontable (much)", mode: "quant_choice", nounType: "uncountable", nounWord: "water", display: "much" },
+        { id: 69, slot: "QUANT_ADV", subtopic: "QUANT", inputType: "choice", prompt: "How __________ notebooks do you need for your classes this term?", options: ["many", "much", "a little"], correctOption: "many", tense: "Cuantificador contable plural (many)", mode: "quant_choice", nounType: "countable", nounWord: "notebooks", display: "many" },
+        { id: 70, slot: "QUANT_ADV", subtopic: "ADV", inputType: "text", showSAO: true, before: "The mechanic checked the brakes very", tag: "careful", after: "before letting us drive.", tense: "Adverbio de modo (-ly)", mode: "adverb", accepted: ["carefully"], display: "carefully" },
+        { id: 71, slot: "QUANT_ADV", subtopic: "ADV", inputType: "text", showSAO: true, before: "The room was completely silent, so the visitors spoke very", tag: "quiet", after: ".", tense: "Adverbio de modo (-ly)", mode: "adverb", accepted: ["quietly"], display: "quietly" },
+        { id: 72, slot: "QUANT_ADV", subtopic: "ADV", inputType: "text", showSAO: true, before: "Even though she was nervous, Laura presented her project really", tag: "good", after: ".", tense: "Adverbio irregular (good → well)", mode: "adverb", accepted: ["well"], display: "well" },
+        { id: 73, slot: "QUANT_ADV", subtopic: "ADV", inputType: "text", showSAO: true, before: "The rain was heavy, so the driver drove very", tag: "slow", after: ".", tense: "Adverbio de modo (-ly)", mode: "adverb", accepted: ["slowly"], display: "slowly" },
+
+        // --- SLOT 10: STAT_WHOSE (8 choice items: 4 STATIVE + 4 WHOSE) ---
+        { id: 74, slot: "STAT_WHOSE", subtopic: "STATIVE", inputType: "choice", prompt: "¿Cuál de los siguientes es un verbo de estado (stative verb) y NO una acción física?", options: ["Know", "Run", "Climb"], correctOption: "Know", tense: "Verbo de estado (Stative verb)", mode: "stative_choice", display: "Know" },
+        { id: 75, slot: "STAT_WHOSE", subtopic: "STATIVE", inputType: "choice", prompt: "Identifica el verbo de estado (stative verb: mente, emoción o preferencia):", options: ["Believe", "Swim", "Cook"], correctOption: "Believe", tense: "Verbo de estado (Stative verb)", mode: "stative_choice", display: "Believe" },
+        { id: 76, slot: "STAT_WHOSE", subtopic: "STATIVE", inputType: "choice", prompt: "¿Cuál de estos verbos expresa un estado mental o de gusto (stative verb)?", options: ["Understand", "Dance", "Build"], correctOption: "Understand", tense: "Verbo de estado (Stative verb)", mode: "stative_choice", display: "Understand" },
+        { id: 77, slot: "STAT_WHOSE", subtopic: "STATIVE", inputType: "choice", prompt: "Selecciona el verbo de estado (stative verb) entre las siguientes opciones:", options: ["Love", "Walk", "Paint"], correctOption: "Love", tense: "Verbo de estado (Stative verb)", mode: "stative_choice", display: "Love" },
+        { id: 78, slot: "STAT_WHOSE", subtopic: "WHOSE", inputType: "choice", prompt: "__________ jacket is sitting on that chair near the door?", options: ["Whose", "Who's", "What's"], correctOption: "Whose", tense: "Posesión interrogativa (Whose)", mode: "whose_choice", display: "Whose" },
+        { id: 79, slot: "STAT_WHOSE", subtopic: "WHOSE", inputType: "choice", prompt: "__________ phone is ringing inside the classroom?", options: ["Whose", "Who's", "What's"], correctOption: "Whose", tense: "Posesión interrogativa (Whose)", mode: "whose_choice", display: "Whose" },
+        { id: 80, slot: "STAT_WHOSE", subtopic: "WHOSE", inputType: "choice", prompt: "__________ bicycle did you borrow to get to the park?", options: ["Whose", "Who's", "What's"], correctOption: "Whose", tense: "Posesión interrogativa (Whose)", mode: "whose_choice", display: "Whose" },
+        { id: 81, slot: "STAT_WHOSE", subtopic: "WHOSE", inputType: "choice", prompt: "__________ knocking on the front door right now?", options: ["Who's", "Whose", "What's"], correctOption: "Who's", tense: "Contracción (Who's = Who is)", mode: "whose_choice", display: "Who's" },
+
+        // --- SLOT 11: PREP_QW (8 choice items: 4 PREP + 4 QW) ---
+        { id: 82, slot: "PREP_QW", subtopic: "PREP", inputType: "choice", prompt: "I will wait for you __________ the bus station at 6:00 PM.", options: ["at", "on", "in"], correctOption: "at", tense: "Preposición de lugar (at)", mode: "prep_choice", prepHint: "punto específico de encuentro", display: "at" },
+        { id: 83, slot: "PREP_QW", subtopic: "PREP", inputType: "choice", prompt: "Let's meet __________ the main entrance of the museum.", options: ["at", "on", "in"], correctOption: "at", tense: "Preposición de lugar (at)", mode: "prep_choice", prepHint: "punto concreto de reunión", display: "at" },
+        { id: 84, slot: "PREP_QW", subtopic: "PREP", inputType: "choice", prompt: "My headphones are inside the small pocket __________ my backpack.", options: ["in", "at", "on"], correctOption: "in", tense: "Preposición de lugar (in)", mode: "prep_choice", prepHint: "dentro de un espacio cerrado", display: "in" },
+        { id: 85, slot: "PREP_QW", subtopic: "PREP", inputType: "choice", prompt: "Please leave the extra keys __________ the kitchen table.", options: ["on", "in", "at"], correctOption: "on", tense: "Preposición de lugar (on)", mode: "prep_choice", prepHint: "sobre una superficie", display: "on" },
+        { id: 86, slot: "PREP_QW", subtopic: "QW", inputType: "choice", prompt: "__________ does the outdoor concert start tonight? — At 8:00 PM.", options: ["When", "What", "How"], correctOption: "When", tense: "Question Word (When = cuándo)", mode: "qw_choice", display: "When" },
+        { id: 87, slot: "PREP_QW", subtopic: "QW", inputType: "choice", prompt: "__________ do you usually get to campus—by bus or on foot?", options: ["How", "When", "What"], correctOption: "How", tense: "Question Word (How = cómo)", mode: "qw_choice", display: "How" },
+        { id: 88, slot: "PREP_QW", subtopic: "QW", inputType: "choice", prompt: "__________ are you planning to cook for dinner tonight?", options: ["What", "When", "How"], correctOption: "What", tense: "Question Word (What = qué)", mode: "qw_choice", display: "What" },
+        { id: 89, slot: "PREP_QW", subtopic: "QW", inputType: "choice", prompt: "__________ did your cousin move to Monterrey? — Three years ago.", options: ["When", "What", "How"], correctOption: "When", tense: "Question Word (When = cuándo)", mode: "qw_choice", display: "When" },
+
+        // --- SLOT 12: LETS_PLUR (8 items: 4 LETS [choice] + 4 PLUR [text]) ---
+        { id: 90, slot: "LETS_PLUR", subtopic: "LETS", inputType: "choice", prompt: "__________ watch a comedy movie after finishing our work.", options: ["Let's", "They are", "She did"], correctOption: "Let's", tense: "Sugerencia (Let's + verbo base)", mode: "lets_choice", display: "Let's" },
+        { id: 91, slot: "LETS_PLUR", subtopic: "LETS", inputType: "choice", prompt: "It's sunny outside—__________ walk to the park before sunset.", options: ["Let's", "He is", "We did"], correctOption: "Let's", tense: "Sugerencia (Let's + verbo base)", mode: "lets_choice", display: "Let's" },
+        { id: 92, slot: "LETS_PLUR", subtopic: "LETS", inputType: "choice", prompt: "We've studied for two hours. __________ take a ten-minute break.", options: ["Let's", "They are", "You did"], correctOption: "Let's", tense: "Sugerencia (Let's + verbo base)", mode: "lets_choice", display: "Let's" },
+        { id: 93, slot: "LETS_PLUR", subtopic: "LETS", inputType: "choice", prompt: "__________ order tacos from the street stand down the block.", options: ["Let's", "She was", "They do"], correctOption: "Let's", tense: "Sugerencia (Let's + verbo base)", mode: "lets_choice", display: "Let's" },
+        { id: 94, slot: "LETS_PLUR", subtopic: "PLUR", inputType: "text", showSAO: true, before: "Escribe el plural correcto del sustantivo: one cat → three", tag: "cat", after: ".", tense: "Sustantivo plural regular (-s)", mode: "plural", accepted: ["cats"], display: "cats" },
+        { id: 95, slot: "LETS_PLUR", subtopic: "PLUR", inputType: "text", showSAO: true, before: "Escribe el plural correcto del sustantivo: one box → two", tag: "box", after: ".", tense: "Sustantivo plural (-es tras x)", mode: "plural", accepted: ["boxes"], display: "boxes" },
+        { id: 96, slot: "LETS_PLUR", subtopic: "PLUR", inputType: "text", showSAO: true, before: "Escribe el plural correcto del sustantivo: one city → four", tag: "city", after: ".", tense: "Sustantivo plural (consonante + y → -ies)", mode: "plural", accepted: ["cities"], display: "cities" },
+        { id: 97, slot: "LETS_PLUR", subtopic: "PLUR", inputType: "text", showSAO: true, before: "Escribe el plural correcto del sustantivo: one bus → five", tag: "bus", after: ".", tense: "Sustantivo plural (-es tras s)", mode: "plural", accepted: ["buses"], display: "buses" }
+      ];
+
+      /* =====================================================================
+         4. ESTADO DE LA SESIÓN Y COLAS ESTRATIFICADAS
+         ===================================================================== */
+      const slotMap = {};
+      slotDefinitions.forEach(function (s) {
+        slotMap[s.key] = s;
+      });
+
+      const subtopicQueues = {}; // Garantiza probabilidad exacta 50/50 o 33/33/33 por ronda
+      const usedIdsBySubtopic = {}; // Evita repetir reactivos dentro de cada subtema
+
+      let verbFilter = "all";
+      let roundMasterDeck = []; // Los 12 reactivos completos de la ronda actual (para radiografía)
+      let activeDeck = [];      // Los reactivos activos (12 en ronda normal o solo fallados en repaso)
+      let currentIdx = 0;
+      let roundScore = 0;
+      let totalSessionScore = 0;
+      let roundNumber = 0;
+      let attempts = 0;
+      let isRedemptionMode = false;
+      let studentName = "";
+      let isQuestionFinished = false;
+
+      /* =====================================================================
+         5. UTILIDADES
+         ===================================================================== */
+      function normalizeInput(str) {
+        return String(str)
+          .trim()
+          .toLowerCase()
+          .replace(/[\u2018\u2019\u02BC]/g, "'")
+          .replace(/[?.!]+$/g, "")
+          .replace(/\s+/g, " ");
+      }
+
+      function escapeHTML(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function shuffle(arr) {
+        const copy = arr.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = temp;
+        }
+        return copy;
+      }
+
+      function formatSentenceHTML(q) {
+        if (q.inputType === "choice") {
+          return escapeHTML(q.prompt);
+        }
+        const prefix = q.before ? escapeHTML(q.before) + " " : "";
+        const afterText = escapeHTML(q.after || "");
+        const afterSpacer = /^[.,?!]/.test(q.after || "") ? "" : " ";
+        return prefix + '__________ <span class="prompt-tag">(' + escapeHTML(q.tag) + ")</span>" + afterSpacer + afterText;
+      }
+
+      /* Selecciona el siguiente subtema de la cola estratificada del slot */
+      function popStratifiedSubtopic(slotDef) {
+        if (!subtopicQueues[slotDef.key] || subtopicQueues[slotDef.key].length === 0) {
+          subtopicQueues[slotDef.key] = shuffle(slotDef.subtopics);
+        }
+        return subtopicQueues[slotDef.key].pop();
+      }
+
+      /* Selecciona 1 reactivo no repetido del subtema elegido */
+      function pickQuestionFromSubtopic(subtopicKey) {
+        if (!usedIdsBySubtopic[subtopicKey]) {
+          usedIdsBySubtopic[subtopicKey] = new Set();
+        }
+        const pool = questionBank.filter(function (q) {
+          return q.subtopic === subtopicKey;
+        });
+        let available = pool.filter(function (q) {
+          return !usedIdsBySubtopic[subtopicKey].has(q.id);
+        });
+        if (available.length === 0) {
+          usedIdsBySubtopic[subtopicKey].clear();
+          available = pool.slice();
+        }
+        const chosen = shuffle(available)[0];
+        usedIdsBySubtopic[subtopicKey].add(chosen.id);
+        return chosen;
+      }
+
+      /* Construye una ronda equilibrada de 12 reactivos (1 por cada slot) */
+      function buildRoundOfTwelve() {
+        const picked = slotDefinitions.map(function (slotDef) {
+          const subtopic = popStratifiedSubtopic(slotDef);
+          const baseItem = pickQuestionFromSubtopic(subtopic);
+          return Object.assign({}, baseItem, {
+            slotOrder: slotDef.order,
+            slotLabel: slotDef.label,
+            guideRef: slotDef.guideRef,
+            status: "pending",
+            lastUserAnswer: "",
+            awardedRedemption: false
+          });
+        });
+        return shuffle(picked);
+      }
+
+      /* =====================================================================
+         6. MODAL DE 40 VERBOS (100% COMPATIBLE CON SAFARI iOS)
+         ===================================================================== */
+      function openVerbModal() {
+        const modal = document.getElementById("verbModal");
+        const search = document.getElementById("verbSearch");
+        search.value = "";
+        setVerbFilter("all");
+        modal.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeVerbModal() {
+        const modal = document.getElementById("verbModal");
+        modal.classList.remove("is-open");
+        document.body.style.overflow = "";
+      }
+
+      function setVerbFilter(mode) {
+        verbFilter = mode;
+        document.getElementById("tabAll").className = "tab-btn" + (mode === "all" ? " active" : "");
+        document.getElementById("tabIrreg").className = "tab-btn" + (mode === "irregular" ? " active" : "");
+        document.getElementById("tabReg").className = "tab-btn" + (mode === "regular" ? " active regular-tab" : "");
+        renderVerbList();
+      }
+
+      function buildVerbSectionHTML(list, isRegular) {
+        if (list.length === 0) return "";
+
+        const tableRows = list.map(function (v) {
+          return (
+            "<tr>" +
+              "<td>" + escapeHTML(v.base) + "</td>" +
+              "<td>" + escapeHTML(v.past) + "</td>" +
+              "<td>" + escapeHTML(v.part) + "</td>" +
+              "<td>" + escapeHTML(v.ing) + "</td>" +
+              "<td>" + escapeHTML(v.es) + "</td>" +
+            "</tr>"
+          );
+        }).join("");
+
+        const mobileCards = list.map(function (v) {
+          return (
+            '<div class="verb-card ' + (isRegular ? "regular-card" : "") + '">' +
+              '<div class="verb-card-head">' +
+                '<span class="verb-card-base">' + escapeHTML(v.base) + "</span>" +
+                '<span class="verb-card-es">' + escapeHTML(v.es) + "</span>" +
+              "</div>" +
+              '<div class="verb-card-forms">' +
+                '<div class="verb-form-pill"><span class="verb-form-label">Past</span><span class="verb-form-val">' + escapeHTML(v.past) + "</span></div>" +
+                '<div class="verb-form-pill"><span class="verb-form-label">Participle</span><span class="verb-form-val">' + escapeHTML(v.part) + "</span></div>" +
+                '<div class="verb-form-pill"><span class="verb-form-label">-ing</span><span class="verb-form-val">' + escapeHTML(v.ing) + "</span></div>" +
+              "</div>" +
+            "</div>"
+          );
+        }).join("");
+
+        return (
+          '<div class="verb-desktop-view">' +
+            '<table class="verb-table ' + (isRegular ? "regular-tbl" : "") + '">' +
+              "<thead><tr><th>Base Form</th><th>Simple Past</th><th>Past Participle</th><th>-ing Form</th><th>Español</th></tr></thead>" +
+              "<tbody>" + tableRows + "</tbody>" +
+            "</table>" +
+          "</div>" +
+          '<div class="verb-mobile-view">' + mobileCards + "</div>"
+        );
+      }
+
+      function renderVerbList() {
+        const query = document.getElementById("verbSearch").value.trim().toLowerCase();
+        const matches = function (v) {
+          if (!query) return true;
+          return (
+            v.base.toLowerCase().includes(query) ||
+            v.past.toLowerCase().includes(query) ||
+            v.part.toLowerCase().includes(query) ||
+            v.ing.toLowerCase().includes(query) ||
+            v.es.toLowerCase().includes(query)
+          );
+        };
+
+        const irregList = (verbFilter === "all" || verbFilter === "irregular")
+          ? verbData.irregular.filter(matches)
+          : [];
+        const regList = (verbFilter === "all" || verbFilter === "regular")
+          ? verbData.regular.filter(matches)
+          : [];
+
+        let html = "";
+        if (irregList.length > 0) {
+          html += '<div class="verb-section-title">Irregular Verbs (' + irregList.length + ") — A–Z</div>";
+          html += buildVerbSectionHTML(irregList, false);
+        }
+        if (regList.length > 0) {
+          html += '<div class="verb-section-title regular">Regular Verbs (' + regList.length + ") — A–Z</div>";
+          html += buildVerbSectionHTML(regList, true);
+        }
+
+        if (!html) {
+          html = '<p style="text-align:center;color:#64748b;padding:24px 0;">No se encontraron verbos con "' + escapeHTML(query) + '".</p>';
+        } else {
+          html +=
+            '<div class="spelling-box">' +
+              "<strong>Ortografía rápida:</strong> elimina <em>-e</em> muda antes de <em>-ing</em> (<strong>writing, hiking, preparing</strong>); conserva la <em>y</em> en <strong>studying / trying</strong> y cámbiala por <em>-ied</em> en <strong>studied</strong>; duplica consonante CVC en <strong>planned / planning / getting</strong>." +
+            "</div>";
+        }
+
+        const bodyEl = document.getElementById("verbModalBody");
+        bodyEl.innerHTML = html;
+        bodyEl.scrollTop = 0;
+      }
+
+      /* =====================================================================
+         7. DIAGNÓSTICO PEDAGÓGICO ESPECÍFICO EN ESPAÑOL
+         ===================================================================== */
+      function diagnoseError(userAns, q) {
+        // --- A. Errores de tecleo / ortografía detectados en el simulacro ---
+        if (/\bbougth\b/.test(userAns)) {
+          return "Casi perfecto, pero revisa la ortografía letra por letra: el pasado de 'buy' termina en '-ght', no '-gth'.";
+        }
+        if (/\bclaned\b/.test(userAns)) {
+          return "Casi perfecto, pero revisa la ortografía letra por letra: 'clean' conserva las dos vocales 'ea' antes de agregar '-ed'.";
+        }
+        if (/\btring\b/.test(userAns)) {
+          return "Casi perfecto, pero revisa la ortografía: al agregar '-ing' a 'try', la letra 'y' se conserva intacta.";
+        }
+        if (/(studing|studyed)/.test(userAns)) {
+          return "Revisa la ortografía con 'study': conserva la 'y' antes de '-ing', y cámbiala por '-ied' en pasado.";
+        }
+        if (/(planing|planed|geting|swiming)/.test(userAns)) {
+          return "Regla de ortografía (consonante–vocal–consonante): en verbos cortos como 'plan', 'get' o 'swim', duplica la última consonante antes de '-ed' o '-ing'.";
+        }
+        if (/(writeing|makeing|takeing|comeing|liveing|loseing|chooseing|driveing|giveing|prepareing|hikeing|cycleing|practiceing)/.test(userAns)) {
+          return "Regla de ortografía: cuando el verbo termina en '-e' muda, elimina esa 'e' antes de agregar '-ing'.";
+        }
+
+        // --- B. Diagnósticos para preguntas de selección múltiple ---
+        if (q.mode === "can_choice") {
+          if (userAns.includes("fixes")) {
+            return "Después del modal 'can', el verbo principal siempre va en forma base: nunca lleva '-s' ni '-es', aunque sea tercera persona.";
+          }
+          if (userAns.startsWith("does ")) {
+            return "'Can' hace sus propias preguntas moviéndose al principio; jamás se combina con 'Do' ni 'Does'.";
+          }
+          if (userAns.startsWith("they can not")) {
+            return "Para formar una pregunta con 'can', el modal debe ir al inicio antes del sujeto (Can + sujeto + verbo base).";
+          }
+          if (userAns.includes("can't a good")) {
+            return "Después de 'can' o 'can't' siempre hace falta un verbo principal en forma base (por ejemplo, 'be'); no puede ir directo un sustantivo.";
+          }
+          return "Recuerda la fórmula de pregunta con 'can': Can + sujeto + verbo base (sin '-s' y sin 'do/does').";
+        }
+
+        if (q.mode === "concept_choice") {
+          if (userAns === "simple past") {
+            return "'Simple past' se usa únicamente para hechos terminados en un momento cerrado del pasado (como 'yesterday' o 'in 2021'). Revisa si la descripción habla de conexión con el presente, acción en curso o plan futuro.";
+          }
+          if (userAns === "present perfect") {
+            return "'Present perfect' conecta el pasado con el presente o describe experiencias sin fecha exacta. Vuelve a leer si la definición describe un hecho cerrado, algo en este segundo o un plan futuro.";
+          }
+          if (userAns === "past perfect") {
+            return "'Past perfect' no es el tiempo principal para conectar acciones pasadas con el presente actual; busca el tiempo que vincula el pasado con ahora.";
+          }
+          return "Lee la función descrita: conexión con hoy / experiencia sin fecha (Present perfect), fecha pasada cerrada (Simple past), este preciso instante (Present continuous) o plan ya decidido (be going to).";
+        }
+
+        if (q.mode === "quant_choice") {
+          if (q.nounType === "uncountable") {
+            return "El sustantivo '" + q.nounWord + "' es incontable en singular (no se cuenta con números ni lleva '-s'). No uses 'many' ni 'a few'; elige el cuantificador para incontables.";
+          }
+          return "El sustantivo '" + q.nounWord + "' es contable plural (termina en '-s'). No uses 'much' ni 'a little'; elige el cuantificador para contables plurales.";
+        }
+
+        if (q.mode === "stative_choice") {
+          return "La opción que elegiste describe una acción física visible (movimiento que puedes observar). Un verbo de estado (stative verb) expresa un estado mental, sentimiento, conocimiento o preferencia.";
+        }
+
+        if (q.mode === "whose_choice") {
+          if (userAns === "who's") {
+            return "'Who's' es la contracción de 'Who is' ('¿quién es / está...?'). Cuando sigue un sustantivo para preguntar de quién es un objeto, necesitas la palabra de posesión.";
+          }
+          if (userAns === "whose") {
+            return "'Whose' pregunta posesión y requiere un sustantivo justo después (por ejemplo, 'Whose car...?'). Aquí falta el sujeto y verbo 'is' antes de '-ing'.";
+          }
+          if (userAns === "what's") {
+            return "'What's' significa 'What is' ('¿qué es...?'). Revisa si la pregunta busca al dueño del objeto ('Whose') o a la persona que realiza la acción ('Who's').";
+          }
+          return "Recuerda la diferencia: 'Whose' + sustantivo = posesión ('¿de quién...?'); 'Who's' = 'Who is' ('¿quién está...?').";
+        }
+
+        if (q.mode === "prep_choice") {
+          return "Recuerda la regla básica de lugar: 'at' = punto específico o lugar de encuentro; 'in' = dentro de un espacio cerrado; 'on' = sobre una superficie. Aquí la oración señala: " + q.prepHint + ".";
+        }
+
+        if (q.mode === "qw_choice") {
+          return "Fíjate en la información que pide o responde la oración: 'When' pregunta tiempo/cuándo, 'How' pregunta manera/medio/cómo, y 'What' pregunta una cosa o actividad/qué.";
+        }
+
+        if (q.mode === "lets_choice") {
+          return "Para hacer una sugerencia o invitación seguida de un verbo en forma base ('Hagamos / Vamos a...'), se usa una contracción especial de propuesta, no un sujeto con auxiliar.";
+        }
+
+        // --- C. Diagnósticos para escritura activa ---
+        if (q.mode === "plural") {
+          if (q.tag === "city" && (userAns === "citys" || userAns === "cityes")) {
+            return "Cuando un sustantivo termina en consonante + 'y' (como 'city'), cambia la 'y' por '-ies'.";
+          }
+          if ((q.tag === "box" || q.tag === "bus") && (userAns === "boxs" || userAns === "buss")) {
+            return "Los sustantivos terminados en '-x', '-s', '-sh' o '-ch' forman su plural agregando '-es', no solo '-s'.";
+          }
+          return "Revisa las reglas de plurales: regla general '-s'; tras '-x/-s/-ch/-sh' agrega '-es'; consonante + 'y' cambia a '-ies'.";
+        }
+
+        if (q.mode === "adverb") {
+          if (userAns === "quietest" || userAns === "slowest" || userAns === "best") {
+            return "Usaste un superlativo, pero aquí la oración describe CÓMO se realizó la acción del verbo: necesitas un adverbio de modo.";
+          }
+          if (q.tag === "good" && (userAns === "good" || userAns === "goodly")) {
+            return "'Good' es un adjetivo y tiene un adverbio de modo irregular (no lleva '-ly'). ¿Cómo se dice 'bien' después de un verbo?";
+          }
+          if (userAns === q.tag) {
+            return "Escribiste el adjetivo sin cambiarlo. Como modifica a un verbo (indica CÓMO hicieron la acción), debes transformarlo en adverbio de modo.";
+          }
+          return "Para indicar cómo se realiza una acción usa un adverbio de modo: normalmente adjetivo + '-ly' (o la forma irregular para 'good').";
+        }
+
+        if (q.mode === "pattern_not_to") {
+          if (/\b(don't|doesn't|didn't|do not|not)\b/.test(userAns) && !userAns.startsWith("not to ")) {
+            if (userAns.startsWith("to not ")) {
+              return "El orden estándar del infinitivo negativo coloca 'not' ANTES de 'to': not + to + verbo base.";
+            }
+            return "Entre dos verbos NUNCA se mete 'don't / didn't'. Para negar el segundo verbo solo coloca 'not' justo antes de 'to' (not to + verbo base).";
+          }
+          return "Recuerda la estructura del infinitivo negativo después de 'promise' o 'decide': not + to + verbo base.";
+        }
+
+        if (q.mode === "pattern_to") {
+          if (userAns.endsWith("ing")) {
+            return "Después de verbos de decisión o logro como 'decide', 'manage' o 'agree', usa 'to + verbo base', no terminación '-ing'.";
+          }
+          if (/\b(saved|rented|organized)\b/.test(userAns)) {
+            return "El primer verbo o el auxiliar 'Did' ya marca el tiempo; el segundo verbo NO se conjuga en pasado, va con 'to + forma base'.";
+          }
+          if (!userAns.startsWith("to ")) {
+            return "Te falta la palabra 'to' antes del verbo en forma base.";
+          }
+          return "Usa el patrón de infinitivo: 'to' + verbo en forma base.";
+        }
+
+        if (q.mode === "pattern_ing") {
+          if (userAns.startsWith("to ")) {
+            return "Después de 'enjoy', 'like' o 'avoid' en esta estructura, el segundo verbo va con terminación '-ing', sin 'to'.";
+          }
+          return "Después de 'enjoy', 'like' o 'avoid', escribe el segundo verbo con terminación '-ing' (cuida las reglas de ortografía).";
+        }
+
+        if (q.mode.startsWith("superlative")) {
+          if (!userAns.startsWith("the ")) {
+            return "En el superlativo (uno frente a todo un grupo) siempre debes incluir el artículo 'the' al principio.";
+          }
+          if (/\bmost\s+\w+est\b/.test(userAns)) {
+            return "Nunca mezcles 'most' y '-est' al mismo tiempo: elige solo una forma según la longitud del adjetivo.";
+          }
+          if (q.mode === "superlative_cvc" && /hotest/.test(userAns)) {
+            return "Regla CVC: en adjetivos cortos como 'hot', duplica la última consonante antes de '-est'.";
+          }
+          if (q.mode === "superlative" && userAns.includes("most ")) {
+            return "Este es un adjetivo corto de una sílaba: usa 'the + adjetivo-est', no 'the most'.";
+          }
+          if (q.mode === "superlative_long" && userAns.endsWith("est")) {
+            return "Los adjetivos largos (2+ sílabas) no llevan '-est'; se forman con 'the most + adjetivo'.";
+          }
+          return "Revisa la estructura del superlativo: 'the + adjetivo-est' (cortos) o 'the most + adjetivo' (largos).";
+        }
+
+        if (q.mode.startsWith("comparative")) {
+          if (userAns.endsWith(" than")) {
+            return "La palabra 'than' ya está escrita en la oración; escribe únicamente el comparativo sin repetir 'than'.";
+          }
+          if (/\b(gooder|more good|badder|more bad)\b/.test(userAns)) {
+            return "'Good' y 'bad' son comparativos irregulares: no llevan '-er' ni 'more'. Recuerda sus formas especiales.";
+          }
+          if (q.mode === "comparative_short" && userAns.startsWith("more ")) {
+            return "Los adjetivos cortos de una sílaba forman su comparativo agregando '-er', sin usar 'more'.";
+          }
+          if (q.mode === "comparative_long" && userAns.endsWith("er")) {
+            return "Los adjetivos largos como 'expensive' no llevan '-er'; usa 'more + adjetivo'.";
+          }
+          return "Como la oración compara dos elementos ('than'), escribe la forma comparativa correcta del adjetivo.";
+        }
+
+        if (q.mode === "order_can") {
+          if (/^(your brother|they)\s+can\b/.test(userAns)) {
+            return "En preguntas, el modal 'can' debe ir al principio antes del sujeto: Can + sujeto + verbo base.";
+          }
+          if (/\b(cooks|plays|to cook|to play)\b/.test(userAns)) {
+            return "Después de 'can', el verbo principal siempre va en forma base (sin '-s' y sin 'to').";
+          }
+          return "Sigue el orden correcto de pregunta: Can + sujeto + verbo base + complemento.";
+        }
+
+        // --- D. Auxiliares aislados ---
+        if (q.mode === "aux") {
+          if (userAns.split(" ").length > 1) {
+            return "Aquí solo debes escribir el auxiliar (una sola palabra: did, have, has, am, is, are), porque el verbo ya está en la oración.";
+          }
+          if (userAns === "had") {
+            return "'Had' pertenece al pasado perfecto. Revisa si necesitas Simple Past ('did') o Present Perfect ('have / has').";
+          }
+          if (q.slot === "SP_AUX") {
+            return "Lee hasta el final de la pregunta ('yesterday / last night'): el tiempo pasado con verbo en base exige el auxiliar 'did'.";
+          }
+          if (q.slot === "PP") {
+            if (q.subject === "sing3" && userAns === "have") {
+              return "El sujeto es tercera persona singular ('your sister'): corresponde 'has' en lugar de 'have'.";
+            }
+            if (q.subject !== "sing3" && userAns === "has") {
+              return "Con 'you' o sujetos plurales se usa 'have', nunca 'has'.";
+            }
+            return "El verbo está en Past Participle y pregunta por una experiencia de vida ('ever'): usa 'have' o 'has'.";
+          }
+          if (q.slot === "PC" || q.slot === "FUT") {
+            if (userAns === "do" || userAns === "did") {
+              return "Nunca uses 'do/did' cuando el verbo lleva '-ing' o 'going to'. Necesitas el verbo 'to be' (am / is / are).";
+            }
+            if (q.subject === "sing3" && (userAns === "are" || userAns === "am")) {
+              return "El sujeto es singular (1 persona): usa 'is'.";
+            }
+            if (q.subject === "plur" && (userAns === "is" || userAns === "am")) {
+              return "El sujeto es plural: usa 'are'.";
+            }
+            return "Con '-ing' o 'going to', el auxiliar correcto es 'am', 'is' o 'are' según el sujeto.";
+          }
+        }
+
+        // --- E. Conjugaciones de tiempos verbales ---
+        if (/\b(writed|buyed|goed|breaked|choosed|comed|doed|drinked|drived|eated|feeled|finded|flyed|getted|gived|haved|keeped|losed|maked|meeted|readed|seed|speaked|taked|beed)\b/.test(userAns)) {
+          return "Este verbo es irregular: no forma su pasado ni participio con '-ed'. Revisa su forma irregular.";
+        }
+
+        if (/^(did|didn't|did not)\s+(went|came|saw|wrote|bought|broke|chose|drank|drove|ate|felt|found|flew|got|gave|had|kept|lost|made|met|spoke|took|studied|planned)\b/.test(userAns)) {
+          return "Cuando usas 'did' o 'didn't', el auxiliar ya carga el pasado: el verbo principal siempre vuelve a su forma base.";
+        }
+
+        const cleanBase = (q.tag || "").replace("not / ", "").trim();
+        if (userAns === cleanBase || userAns === q.tag) {
+          return "Escribiste el verbo sin conjugar. Aplica el filtro S–A–O: lee toda la oración y ubica la pista de tiempo.";
+        }
+
+        if (q.slot === "PP") {
+          if (/^(is|are|am|'s|'re|'m)\s+\w+ing\b/.test(userAns) || /^(is|are)\s+\w+ed\b/.test(userAns)) {
+            const subjTip = q.trickySubject ? " Además, revisa el sujeto: " + q.trickySubject + " es singular." : "";
+            return "Palabras pista como 'already', 'yet', 'since' o 'so far' exigen Present Perfect (have/has + participio), nunca 'is/are + -ing'." + subjTip;
+          }
+          if (/^(had|hadn't)\b/.test(userAns)) {
+            return "Usaste 'had' (pasado perfecto), pero la oración conecta con el presente actual: usa 'have' o 'has'.";
+          }
+          const hasAux = /^(have|has|'ve|'s|haven't|hasn't)\b/.test(userAns);
+          if (!hasAux) {
+            return "Te falta el auxiliar del Present Perfect ('have' o 'has') antes del participio pasado (3.ª columna o -ed).";
+          }
+          if (q.subject === "sing3" && /^(have|'ve|haven't)\b/.test(userAns)) {
+            const subjTip = q.trickySubject ? " (" + q.trickySubject + ")" : "";
+            return "Revisa el núcleo del sujeto" + subjTip + ": es singular (1 persona), así que corresponde 'has' en lugar de 'have'.";
+          }
+          if ((q.subject === "plur" || q.subject === "I") && /^(has|'s|hasn't)\b/.test(userAns)) {
+            return "Con 'I' o sujetos plurales debes usar 'have' (o 'haven't'), nunca 'has'.";
+          }
+          if (/\b(wrote|went|broke|chose|drank|drove|ate|flew|gave|saw|spoke|took)\b/.test(userAns)) {
+            return "El auxiliar está bien, pero después de 'have/has' debes usar el Past Participle (3.ª columna), no el Simple Past.";
+          }
+          return "La pista temporal ('already / yet / since / so far') pide Present Perfect: have / has + participio pasado.";
+        }
+
+        if (q.slot === "SP_AFF" || q.slot === "SP_AUX") {
+          if (/^(have|has|'ve|'s|haven't|hasn't)\b/.test(userAns)) {
+            return "La oración menciona un tiempo pasado cerrado ('yesterday / last... / ago'). Usa Simple Past, no 'have/has'.";
+          }
+          if (q.tag && q.tag.includes("not") && !/^(didn't|did not)\b/.test(userAns)) {
+            return "Para negar en Simple Past usa 'didn't' (o 'did not') + verbo en forma base.";
+          }
+          return "El contexto señala un hecho terminado en el pasado: usa Simple Past.";
+        }
+
+        if (q.slot === "PC") {
+          const hasBe = /^(am|is|are|'m|'s|'re)\b/.test(userAns);
+          if (!hasBe) {
+            return "El verbo con '-ing' nunca puede ir solo: te falta el auxiliar 'am', 'is' o 'are' antes del verbo.";
+          }
+          if (!userAns.endsWith("ing")) {
+            return "Después de 'am / is / are' en una acción en curso, el verbo principal debe llevar '-ing'.";
+          }
+          if (q.subject === "plur" && /^(is|'s|am|'m)\b/.test(userAns)) {
+            return "El sujeto es plural: usa 'are' en lugar de 'is'.";
+          }
+          if (q.subject === "sing3" && /^(are|'re|am|'m)\b/.test(userAns)) {
+            const subjTip = q.trickySubject ? " (" + q.trickySubject + ")" : "";
+            return "El sujeto es singular" + subjTip + ": usa 'is' en lugar de 'are'.";
+          }
+          return "La acción ocurre ahora mismo ('right now / Look! / Be quiet!'): usa am / is / are + verbo-ing.";
+        }
+
+        if (q.slot === "FUT") {
+          if (/^(will|'ll|won't)\b/.test(userAns)) {
+            return "Esta oración describe un plan ya decidido o una predicción con evidencia visible: practica la estructura 'am / is / are + going to + verbo base'.";
+          }
+          if (userAns.includes("going ") && !userAns.includes("going to ")) {
+            return "Te faltó la palabra 'to' después de 'going' (am/is/are + going to + verbo base).";
+          }
+          if (!/^(am|is|are|'m|'s|'re|isn't|aren't)\b/.test(userAns)) {
+            return "Nunca omitas el verbo 'to be' (am / is / are / isn't / aren't) antes de 'going to'.";
+          }
+          if (q.subject === "sing3" && /^(are|aren't|'re)\b/.test(userAns)) {
+            return "El sujeto es singular (1 persona o 'it'): usa 'is' o 'isn't' antes de 'going to'.";
+          }
+          return "Usa la estructura completa de futuro: am / is / are (o negativo) + going to + verbo base.";
+        }
+
+        return "Vuelve a leer toda la oración con calma y verifica la regla del bloque.";
+      }
+
+      /* =====================================================================
+         8. FLUJO PRINCIPAL DE LA PRÁCTICA (INICIO, PREGUNTAS, EVALUACIÓN)
+         ===================================================================== */
+      function startSession() {
+        const nameInput = document.getElementById("studentName");
+        const errorBox = document.getElementById("startErrorBox");
+        const val = nameInput.value.trim();
+
+        if (!val) {
+          errorBox.classList.add("is-visible");
+          nameInput.focus();
+          return;
+        }
+
+        errorBox.classList.remove("is-visible");
+        studentName = val;
+        roundNumber = 0;
+        totalSessionScore = 0;
+        startNewRound();
+      }
+
+      function startNewRound() {
+        closeVerbModal();
+        roundNumber++;
+        roundScore = 0;
+        currentIdx = 0;
+        isRedemptionMode = false;
+        roundMasterDeck = buildRoundOfTwelve();
+        activeDeck = roundMasterDeck;
+
+        document.getElementById("startScreen").classList.add("hidden");
+        document.getElementById("resultScreen").classList.add("hidden");
+        document.getElementById("quizScreen").classList.remove("hidden");
+        document.getElementById("headerBadge").textContent = "Ronda " + roundNumber;
+        renderQuestion();
+      }
+
+      function startRedemption() {
+        closeVerbModal();
+        const missed = roundMasterDeck.filter(function (q) {
+          return q.status === "wrong";
+        });
+        if (missed.length === 0) return;
+
+        activeDeck = shuffle(missed);
+        currentIdx = 0;
+        isRedemptionMode = true;
+
+        document.getElementById("resultScreen").classList.add("hidden");
+        document.getElementById("quizScreen").classList.remove("hidden");
+        document.getElementById("headerBadge").textContent = "Repaso R" + roundNumber;
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        const q = activeDeck[currentIdx];
+        attempts = 0;
+        isQuestionFinished = false;
+
+        const labelPrefix = isRedemptionMode ? "Repaso R" + roundNumber : "Ronda " + roundNumber;
+        document.getElementById("progressText").textContent =
+          labelPrefix + " • Reactivo " + (currentIdx + 1) + " de " + activeDeck.length;
+        document.getElementById("scoreText").textContent = "Puntos ronda: " + roundScore;
+        document.getElementById("progressFill").style.width = ((currentIdx / activeDeck.length) * 100) + "%";
+
+        document.getElementById("sentenceBox").innerHTML = formatSentenceHTML(q);
+
+        const fb = document.getElementById("feedbackBox");
+        fb.className = "feedback";
+        fb.innerHTML = "";
+
+        document.getElementById("nextBtn").classList.add("hidden");
+
+        if (q.inputType === "choice") {
+          document.getElementById("textAnswerArea").classList.add("hidden");
+          document.getElementById("choiceAnswerArea").classList.remove("hidden");
+          renderChoiceButtons(q);
+        } else {
+          document.getElementById("choiceAnswerArea").classList.add("hidden");
+          document.getElementById("textAnswerArea").classList.remove("hidden");
+          document.getElementById("checkBtn").classList.remove("hidden");
+
+          const labelMap = {
+            aux: "Escribe únicamente el auxiliar faltante:",
+            order_can: "Escribe la pregunta ordenada (sin el signo final '?'):",
+            superlative: "Escribe el superlativo completo (incluye 'the'):",
+            superlative_cvc: "Escribe el superlativo completo (incluye 'the'):",
+            superlative_long: "Escribe el superlativo completo (incluye 'the'):",
+            comparative_short: "Escribe únicamente la forma comparativa:",
+            comparative_long: "Escribe únicamente la forma comparativa:",
+            comparative_irreg: "Escribe únicamente la forma comparativa irregular:",
+            pattern_ing: "Escribe la forma correcta del verbo:",
+            pattern_to: "Escribe la forma correcta del verbo:",
+            pattern_not_to: "Escribe la forma negativa del infinitivo:",
+            adverb: "Escribe el adverbio de modo correcto:",
+            plural: "Escribe el sustantivo en plural:",
+            verb: "Escribe la forma verbal exacta (sin contracciones si prefieres):"
+          };
+          document.getElementById("inputLabel").textContent = labelMap[q.mode] || "Escribe tu respuesta:";
+
+          const saoChip = document.getElementById("saoChip");
+          if (q.showSAO) {
+            saoChip.classList.remove("hidden");
+          } else {
+            saoChip.classList.add("hidden");
+          }
+
+          const input = document.getElementById("answerInput");
+          input.value = "";
+          input.disabled = false;
+          input.focus();
+        }
+      }
+
+      function renderChoiceButtons(q) {
+        const listEl = document.getElementById("choiceList");
+        listEl.innerHTML = "";
+        const shuffledOptions = shuffle(q.options);
+        const letters = ["A", "B", "C"];
+
+        shuffledOptions.forEach(function (opt, idx) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "choice-btn";
+          btn.dataset.value = opt;
+          btn.innerHTML =
+            '<span class="choice-letter">' + letters[idx] + "</span>" +
+            "<span>" + escapeHTML(opt) + "</span>";
+          btn.addEventListener("click", function () {
+            handleChoiceAnswer(opt, btn);
+          });
+          listEl.appendChild(btn);
+        });
+      }
+
+      function handleChoiceAnswer(selectedOption, clickedBtn) {
+        if (isQuestionFinished) return;
+        const q = activeDeck[currentIdx];
+        const fb = document.getElementById("feedbackBox");
+        const isCorrect = normalizeInput(selectedOption) === normalizeInput(q.correctOption);
+
+        attempts++;
+
+        if (isCorrect) {
+          clickedBtn.classList.add("choice-correct");
+          disableAllChoiceButtons();
+          applyCorrectScoreAndFeedback(q, selectedOption, fb);
+          finishQuestionUI();
+        } else {
+          clickedBtn.classList.add("choice-wrong");
+          clickedBtn.disabled = true;
+          const diagnostic = diagnoseError(normalizeInput(selectedOption), q);
+
+          if (attempts === 1) {
+            fb.className = "feedback warn is-visible";
+            fb.innerHTML =
+              "⚠️ <strong>Intento 1 de 2:</strong> " + escapeHTML(diagnostic) +
+              "<br><em>Analiza la pista y elige entre las opciones restantes.</em>";
+          } else {
+            disableAllChoiceButtons();
+            q.lastUserAnswer = selectedOption;
+            if (!isRedemptionMode) {
+              q.status = "wrong";
+              fb.className = "feedback error is-visible";
+              fb.innerHTML =
+                "❌ <strong>Incorrecto.</strong> " + escapeHTML(diagnostic) +
+                "<br><em>Queda pendiente para tu repaso al final de esta ronda (consulta Repaso general · " + escapeHTML(q.guideRef) + ").</em>";
+            } else {
+              highlightCorrectChoiceButton(q.correctOption);
+              fb.className = "feedback error is-visible";
+              fb.innerHTML =
+                "❌ <strong>Respuesta correcta:</strong> <code>" + escapeHTML(q.display) + "</code> (" + escapeHTML(q.tense) + ").<br>" +
+                escapeHTML(diagnostic);
+            }
+            finishQuestionUI();
+          }
+        }
+      }
+
+      function disableAllChoiceButtons() {
+        const buttons = document.querySelectorAll("#choiceList .choice-btn");
+        buttons.forEach(function (b) {
+          b.disabled = true;
+        });
+      }
+
+      function highlightCorrectChoiceButton(correctVal) {
+        const buttons = document.querySelectorAll("#choiceList .choice-btn");
+        buttons.forEach(function (b) {
+          if (normalizeInput(b.dataset.value) === normalizeInput(correctVal)) {
+            b.classList.add("choice-correct");
+          }
+        });
+      }
+
+      function checkTextAnswer() {
+        if (isQuestionFinished) return;
+        const inputEl = document.getElementById("answerInput");
+        const rawVal = inputEl.value;
+        const userAns = normalizeInput(rawVal);
+        const fb = document.getElementById("feedbackBox");
+        const q = activeDeck[currentIdx];
+
+        if (!userAns) {
+          fb.className = "feedback warn is-visible";
+          fb.textContent = "Escribe tu respuesta antes de revisar.";
+          inputEl.focus();
+          return;
+        }
+
+        attempts++;
+        const isCorrect = q.accepted.includes(userAns);
+
+        if (isCorrect) {
+          applyCorrectScoreAndFeedback(q, rawVal.trim(), fb);
+          finishQuestionUI();
+        } else {
+          const diagnostic = diagnoseError(userAns, q);
+          if (attempts === 1) {
+            fb.className = "feedback warn is-visible";
+            fb.innerHTML =
+              "⚠️ <strong>Intento 1 de 2:</strong> " + escapeHTML(diagnostic) +
+              "<br><em>Revisa tu respuesta con calma e inténtalo una vez más.</em>";
+            inputEl.focus();
+          } else {
+            q.lastUserAnswer = rawVal.trim();
+            if (!isRedemptionMode) {
+              q.status = "wrong";
+              fb.className = "feedback error is-visible";
+              fb.innerHTML =
+                "❌ <strong>Incorrecto.</strong> " + escapeHTML(diagnostic) +
+                "<br><em>Queda pendiente para tu repaso al final de esta ronda (consulta Repaso general · " + escapeHTML(q.guideRef) + ").</em>";
+            } else {
+              fb.className = "feedback error is-visible";
+              fb.innerHTML =
+                "❌ <strong>Forma correcta:</strong> <code>" + escapeHTML(q.display) + "</code> (" + escapeHTML(q.tense) + ").<br>" +
+                escapeHTML(diagnostic);
+            }
+            finishQuestionUI();
+          }
+        }
+      }
+
+      function applyCorrectScoreAndFeedback(q, rawAnswer, fb) {
+        q.lastUserAnswer = rawAnswer;
+
+        if (!isRedemptionMode) {
+          const earned = attempts === 1 ? 1 : 0.5;
+          roundScore += earned;
+          totalSessionScore += earned;
+          q.status = attempts === 1 ? "ok" : "retry";
+
+          fb.className = "feedback success is-visible";
+          fb.innerHTML = attempts === 1
+            ? "✅ <strong>¡Correcto!</strong> (+1 pt) · Estructura: <strong>" + escapeHTML(q.tense) + "</strong>."
+            : "✅ <strong>¡Bien corregido!</strong> (+0.5 pts) · Estructura: <strong>" + escapeHTML(q.tense) + "</strong>.";
+        } else {
+          if (q.status === "wrong" && !q.awardedRedemption) {
+            roundScore += 0.5;
+            totalSessionScore += 0.5;
+            q.awardedRedemption = true;
+          }
+          q.status = "recovered";
+          fb.className = "feedback success is-visible";
+          fb.innerHTML = "✅ <strong>¡Recuperada!</strong> (+0.5 pts) · Dominaste: <strong>" + escapeHTML(q.tense) + "</strong>.";
+        }
+
+        document.getElementById("scoreText").textContent = "Puntos ronda: " + roundScore;
+      }
+
+      function finishQuestionUI() {
+        isQuestionFinished = true;
+        const inputEl = document.getElementById("answerInput");
+        if (inputEl) inputEl.disabled = true;
+        document.getElementById("checkBtn").classList.add("hidden");
+
+        const nextBtn = document.getElementById("nextBtn");
+        nextBtn.classList.remove("hidden");
+        nextBtn.textContent =
+          currentIdx === activeDeck.length - 1 ? "Ver radiografía de ronda →" : "Siguiente →";
+      }
+
+      function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < activeDeck.length) {
+          renderQuestion();
+        } else {
+          showRoundSummary();
+        }
+      }
+
+      function showRoundSummary() {
+        document.getElementById("quizScreen").classList.add("hidden");
+        document.getElementById("resultScreen").classList.remove("hidden");
+        document.getElementById("headerBadge").textContent = "Ronda " + roundNumber + " lista";
+
+        const now = new Date();
+        const timeStr = now.toLocaleString("es-MX", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+        const pad2 = function (n) { return String(n).padStart(2, "0"); };
+        const code = "GL-R" + roundNumber + "-" + Math.round(totalSessionScore * 10) + "-" + pad2(now.getMinutes()) + pad2(now.getSeconds());
+
+        document.getElementById("roundSummaryTitle").textContent = "Resumen de Ronda " + roundNumber;
+        document.getElementById("roundScoreDisplay").textContent = roundScore + " / 12";
+        document.getElementById("cumulativeDisplay").textContent =
+          "Acumulado total: " + totalSessionScore + " / " + (roundNumber * 12) + " pts (" + roundNumber + (roundNumber === 1 ? " ronda)" : " rondas)");
+
+        document.getElementById("resName").textContent = studentName;
+        document.getElementById("resRounds").textContent = roundNumber + " (" + (roundNumber * 12) + " reactivos practicados)";
+        document.getElementById("resTime").textContent = timeStr;
+        document.getElementById("resCode").textContent = code;
+
+        // Radiografía ordenada del Slot 1 al Slot 12
+        const sortedMaster = roundMasterDeck.slice().sort(function (a, b) {
+          return a.slotOrder - b.slotOrder;
+        });
+
+        const gridEl = document.getElementById("topicBreakdownGrid");
+        gridEl.innerHTML = sortedMaster.map(function (item) {
+          let cls = "status-ok";
+          let icon = "✅";
+          let subText = "1 pt · A la primera";
+
+          if (item.status === "retry") {
+            cls = "status-retry";
+            icon = "⚠️";
+            subText = "0.5 pts · 2.º intento";
+          } else if (item.status === "recovered") {
+            cls = "status-retry";
+            icon = "🔁";
+            subText = "0.5 pts · Recuperado";
+          } else if (item.status === "wrong") {
+            cls = "status-wrong";
+            icon = "❌";
+            subText = "Pendiente · Repaso general (" + item.guideRef + ")";
+          }
+
+          return (
+            '<div class="topic-pill ' + cls + '">' +
+              '<div class="topic-pill-head"><span>' + escapeHTML(item.slotLabel) + "</span><span>" + icon + "</span></div>" +
+              '<div class="topic-pill-sub">' + escapeHTML(subText) + "</div>" +
+            "</div>"
+          );
+        }).join("");
+
+        const toReview = sortedMaster.filter(function (q) {
+          return q.status === "wrong";
+        });
+        const retryBtn = document.getElementById("retryMissedBtn");
+        const mistakesSec = document.getElementById("mistakesSection");
+
+        if (toReview.length > 0) {
+          retryBtn.classList.remove("hidden");
+          retryBtn.textContent = "🔁 Repetir las que fallé en esta ronda (" + toReview.length + ")";
+
+          mistakesSec.classList.remove("hidden");
+          const listEl = document.getElementById("reviewList");
+          listEl.innerHTML = toReview.map(function (m) {
+            return (
+              '<div class="review-item">' +
+                '<div style="margin-bottom:4px;">' + formatSentenceHTML(m) + "</div>" +
+                '<div style="color:var(--error);font-size:0.86rem;">Tu respuesta anterior: <strong>' + escapeHTML(m.lastUserAnswer || "—") + "</strong></div>" +
+                '<span class="review-ref">📘 Repaso general · ' + escapeHTML(m.guideRef) + "</span>" +
+              "</div>"
+            );
+          }).join("");
+        } else {
+          retryBtn.classList.add("hidden");
+          mistakesSec.classList.add("hidden");
+        }
+      }
+
+      /* =====================================================================
+         9. CONEXIÓN DE EVENTOS DENTRO DE DOMContentLoaded (ZERO INLINE ONCLICK)
+         ===================================================================== */
+      document.addEventListener("DOMContentLoaded", function () {
+        // Inicio y controles de sesión
+        document.getElementById("startSessionBtn").addEventListener("click", startSession);
+        document.getElementById("studentName").addEventListener("input", function () {
+          if (this.value.trim()) {
+            document.getElementById("startErrorBox").classList.remove("is-visible");
+          }
+        });
+        document.getElementById("studentName").addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            startSession();
+          }
+        });
+
+        // Controles del quiz
+        document.getElementById("checkBtn").addEventListener("click", checkTextAnswer);
+        document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+
+        document.getElementById("answerInput").addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (!isQuestionFinished) {
+              checkTextAnswer();
+            } else {
+              nextQuestion();
+            }
+          }
+        });
+
+        // Controles de resumen
+        document.getElementById("retryMissedBtn").addEventListener("click", startRedemption);
+        document.getElementById("newRoundBtn").addEventListener("click", startNewRound);
+        document.getElementById("resetAllBtn").addEventListener("click", function () {
+          window.location.reload();
+        });
+
+        // Modal de 40 verbos (iOS-safe)
+        document.getElementById("openVerbsStartBtn").addEventListener("click", openVerbModal);
+        document.getElementById("openVerbsResultBtn").addEventListener("click", openVerbModal);
+        document.getElementById("closeModalTopBtn").addEventListener("click", closeVerbModal);
+        document.getElementById("closeModalBottomBtn").addEventListener("click", closeVerbModal);
+
+        document.getElementById("verbModal").addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeVerbModal();
+          }
+        });
+
+        document.getElementById("verbSearch").addEventListener("input", renderVerbList);
+
+        ["tabAll", "tabIrreg", "tabReg"].forEach(function (tabId) {
+          document.getElementById(tabId).addEventListener("click", function () {
+            setVerbFilter(this.dataset.filter);
+          });
+        });
+
+        // Accesibilidad global por teclado (Escape cierra modal, Enter avanza en modo opción múltiple)
+        document.addEventListener("keydown", function (e) {
+          const modal = document.getElementById("verbModal");
+          if (e.key === "Escape" && modal.classList.contains("is-open")) {
+            closeVerbModal();
+            return;
+          }
+          if (
+            e.key === "Enter" &&
+            !document.getElementById("quizScreen").classList.contains("hidden") &&
+            isQuestionFinished &&
+            !modal.classList.contains("is-open")
+          ) {
+            const activeTag = document.activeElement ? document.activeElement.tagName : "";
+            if (activeTag !== "INPUT" && activeTag !== "BUTTON") {
+              e.preventDefault();
+              nextQuestion();
+            }
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
